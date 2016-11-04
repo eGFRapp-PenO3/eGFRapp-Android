@@ -18,6 +18,8 @@ import android.widget.Spinner;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public double extra_FAS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +31,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                calculateGFR();
+
             }
         });
 
@@ -43,11 +45,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Spinner spinner = (Spinner) findViewById(R.id.sex);
+        Spinner sexSpinner = (Spinner) findViewById(R.id.sex);
+        sexSpinner.getOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.array_sex, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        sexSpinner.setAdapter(adapter);
     }
 
     @Override
@@ -99,5 +102,17 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void calculateGFR(){
+        extra_FAS = calculateFAS();
+    }
+
+    public double calculateFAS(){
+        return 0;
+    }
+
+    public void showResult(double[] ){
+
     }
 }

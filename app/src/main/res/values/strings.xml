@@ -7,25 +7,28 @@
     <string name="action_settings">Settings</string>
 
     <string name="hint_patID">Patient ID</string>
-    <string name="unit_patID"></string>
+    <string name="unit_patID" translatable="false"></string>
 
     <string name="hint_age">Age</string>
     <string name="unit_age">years</string>
 
-    <string name="hint_scr">Serum Creatinine</string>
-    <string name="unit_scr">mg/dL</string>
+    <string name="hint_scr" translatable="false">Serum Creatinine</string>
+    <string name="unit_scr" translatable="false">mg/dL</string>
 
     <string name="hint_hgt">Height (cm)</string>
-    <string name="unit_hgt">cm</string>
+    <string name="unit_hgt" translatable="false">cm</string>
 
     <string name="hint_wgt">Weight</string>
-    <string name="unit_wgt">kg</string>
+    <string name="unit_wgt" translatable="false">kg</string>
 
     <string name="hint_bsa">Body Surface Area</string>
-    <string name="unit_bsa">m^2</string>
+    <string name="unit_bsa" translatable="false">m^2</string>
+
+    <string name="text_FAS">Full Age Spectrum (BSA 1.73m sq)</string>
 
     <string-array name="array_sex">
         <item>M</item>
         <item>F</item>
     </string-array>
+    <string name="title_activity_result">Results</string>
 </resources>
