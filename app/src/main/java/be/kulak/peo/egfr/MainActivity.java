@@ -1,5 +1,6 @@
 package be.kulak.peo.egfr;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,10 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import static java.security.AccessController.getContext;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public double extra_FAS;
+    public final static String extra_results = "be.kulak.peo.egfr.results";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +31,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab_calc = (FloatingActionButton) findViewById(R.id.fab_calc);
+        fab_calc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calculateGFR();
-
+                Intent resultIntent = new Intent(getBaseContext() , ResultActivity.class);
+                double[] results = calculateGFR();
+                resultIntent.putExtra(extra_results, results);
+                startActivity(resultIntent);
             }
         });
 
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Spinner sexSpinner = (Spinner) findViewById(R.id.sex);
-        sexSpinner.getOnItemSelectedListener(this);
+        //sexSpinner.getOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.array_sex, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -105,15 +110,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void calculateGFR(){
-        extra_FAS = calculateFAS();
+    public double[] calculateGFR(){
+        double FAS = calculateFAS();
+        double[] result = {FAS};
+        return result;
     }
 
     public double calculateFAS(){
-        return 0;
-    }
-
-    public void showResult(double[] ){
-
+        return 42;
     }
 }
