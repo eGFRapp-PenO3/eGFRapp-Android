@@ -3,7 +3,6 @@ package be.kulak.peo.egfr;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,15 +13,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.Spinner;
-
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public final static String extra_results = "be.kulak.peo.egfr.results";
+
+    EditText mPatID;
+    EditText mAge;
+    EditText mScr;
+    EditText mHgt;
+    EditText mWgt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,24 @@ public class MainActivity extends AppCompatActivity
                 double[] results = calculateGFR();
                 resultIntent.putExtra(extra_results, results);
                 startActivity(resultIntent);
+            }
+        });
+
+        mPatID = (EditText) findViewById(R.id.patID);
+        mAge = (EditText) findViewById(R.id.age);
+        mScr = (EditText) findViewById(R.id.scr);
+        mHgt = (EditText) findViewById(R.id.hgt);
+        mWgt = (EditText) findViewById(R.id.wgt);
+
+        FloatingActionButton fab_reset = (FloatingActionButton) findViewById(R.id.fab_reset);
+        fab_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPatID.setText("");
+                mAge.setText("");
+                mScr.setText("");
+                mHgt.setText("");
+                mWgt.setText("");
             }
         });
 
