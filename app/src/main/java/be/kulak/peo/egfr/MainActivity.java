@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -21,11 +22,18 @@ public class MainActivity extends AppCompatActivity
 
     public final static String extra_results = "be.kulak.peo.egfr.results";
 
+    String patID;
+    double scr;
+    boolean sex;
+    int hgt;
+    double wgt;
+
     EditText mPatID;
     EditText mAge;
     EditText mScr;
     EditText mHgt;
     EditText mWgt;
+    Spinner mSex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity
         mScr = (EditText) findViewById(R.id.scr);
         mHgt = (EditText) findViewById(R.id.hgt);
         mWgt = (EditText) findViewById(R.id.wgt);
+        mSex = (Spinner) findViewById(R.id.sex);
 
         FloatingActionButton fab_reset = (FloatingActionButton) findViewById(R.id.fab_reset);
         fab_reset.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +69,15 @@ public class MainActivity extends AppCompatActivity
                 mScr.setText("");
                 mHgt.setText("");
                 mWgt.setText("");
+                mSex.setSelection(0);
+            }
+        });
+
+        Button btnPatID = (Button) findViewById(R.id.btn_patID);
+        btnPatID.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
             }
         });
 
@@ -91,13 +109,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -119,7 +130,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_calc) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_hist) {
 
         } else if (id == R.id.nav_set) {
@@ -132,6 +143,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public double[] calculateGFR(){
+        patID = mPatID.getText().toString();
+        scr = Double.parseDouble(mScr.toString());
+        sex = mSex.getSelectedItemPosition()==1;
+        hgt = Integer.parseInt(mHgt.toString());
+        wgt = Double.parseDouble(mWgt.toString());
         double FAS = calculateFAS();
         double[] result = {FAS};
         return result;
