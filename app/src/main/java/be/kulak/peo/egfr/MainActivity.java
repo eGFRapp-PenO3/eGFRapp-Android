@@ -192,5 +192,5 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
-
+    //linde is een traag kindje
 }
