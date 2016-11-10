@@ -1,6 +1,7 @@
 package be.kulak.peo.egfr;
 
 import android.content.Intent;
+import android.nfc.FormatException;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
@@ -10,12 +11,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import static java.lang.Math.pow;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         btnPatID.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
+                Toast.makeText(MainActivity.this, "Database not yet supported.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -134,7 +137,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_hist) {
 
         } else if (id == R.id.nav_set) {
-
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -143,11 +147,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     public double[] calculateGFR(){
-        patID = mPatID.getText().toString();
-        scr = Double.parseDouble(mScr.toString());
-        sex = mSex.getSelectedItemPosition()==1;
-        hgt = Integer.parseInt(mHgt.toString());
-        wgt = Double.parseDouble(mWgt.toString());
+        //patID = mPatID.getText().toString();
+        //scr = Double.parseDouble(mScr.toString());
+        //sex = mSex.getSelectedItemPosition()==1;
+        //hgt = Integer.parseInt(mHgt.toString());
+        //wgt = Double.parseDouble(mWgt.toString());
+        double Q = calculateQ(sex, 4);
         double FAS = calculateFAS();
         double[] result = {FAS};
         return result;
@@ -156,4 +161,36 @@ public class MainActivity extends AppCompatActivity
     public double calculateFAS(){
         return 42;
     }
+
+    public double calculateQ(boolean sex, double age){
+        if(age<20){
+            double a,b,c,d,e;
+            if(sex){
+                a = 2.1e-1;
+                b = 5.7e-2;
+                c = 7.5e-3;
+                d = 6.4e-4;
+                e = 1.6e-5;
+            }else{
+                a = 2.3e-1;
+                b = 3.4e-2;
+                c = 1.8e-3;
+                d = 1.7e-4;
+                e = 5.1e-6;
+            }
+            return a + (b * age) - (c * pow(age,2)) + (d* pow(age,3)) - (e * pow(age,4));
+        }else{
+            return sex ? .7: .9;
+        }
+    }
+
+    public double parseDouble(EditText text){
+        String stringVal = text.toString();
+        try{
+            double value = Double.parseDouble(stringVal);
+        }catch (FormatException e){
+
+        }
+    }
+
 }
