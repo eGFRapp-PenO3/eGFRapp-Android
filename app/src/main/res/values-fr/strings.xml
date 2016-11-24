@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">eGFR</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="btn_patID">Ramener des données</string>
+    <string name="hint_age">Age</string>
+    <string name="hint_bsa">Surface corporelle (BSA)</string>
+    <string name="hint_hgt">Hauteur (cm)</string>
+    <string name="hint_patID">Patient ID</string>
+    <string name="hint_wgt">Poids</string>
+    <string name="navigation_drawer_close">Ferme</string>
+    <string name="navigation_drawer_open">Lance</string>
+    <string name="title_activity_result">Résultats</string>
+</resources>

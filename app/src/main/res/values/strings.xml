@@ -26,7 +26,7 @@
     <string name="unit_bsa" translatable="false">m^2</string>
 
     <string name="text_FAS">FAS</string>
-    <string name="extra_FAS">Full Age Spectrum (BSA 1.73 m sq)</string>
+    <string name="extra_FAS" translatable="false">Full Age Spectrum (BSA 1.73 m sq)</string>
 
     <string-array name="array_sex">
         <item>M</item>
