@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.util.IllegalFormatException;
 
+import static java.lang.Math.exp;
 import static java.lang.Math.pow;
 
 public class MainActivity extends AppCompatActivity
@@ -31,9 +32,10 @@ public class MainActivity extends AppCompatActivity
     String patID;
     double scr;
     boolean sex;
-    int hgt;
+    double hgt;
     double wgt;
-    double[] result;
+    double age;
+    double[] result = new double[2];
 
     EditText mPatID;
     EditText mAge;
@@ -141,8 +143,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_hist) {
 
         } else if (id == R.id.nav_set) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -153,18 +154,51 @@ public class MainActivity extends AppCompatActivity
     public boolean calculateGFR() {
         patID = mPatID.getText().toString();
         // true = female
-        sex = mSex.getSelectedItemPosition()==1;
-        //scr = Double.parseDouble(mScr.toString());
-        //hgt = Integer.parseInt(mHgt.toString());
-        //wgt = Double.parseDouble(mWgt.toString());
-        double Q = calculateQ(sex, 4);
-        double FAS = calculateFAS();
+        sex = mSex.getSelectedItemPosition() == 1;
+        scr = parseDouble(mScr, true);
+        age = parseDouble(mAge, true);
+        hgt = parseDouble(mHgt, false)/100;
+        wgt = parseDouble(mWgt, false);
+        if(scr==-1 | age==-1){
+            return false;
+        }
+        double Q = calculateQ(sex, age, 0);
+        double QL = calculateQ(sex, age, hgt);
+        double BSA = calculateBSA(hgt, wgt);
+        double FAS = calculateFAS(scr, age, Q, BSA);
+        double FAS_QL = calculateFAS(scr, age, QL, BSA);
         result[0] = FAS;
+        result[1] = FAS_QL;
         return true;
     }
 
-    public double calculateFAS() {
-        return 42;
+    public double calculateFAS(double scr, double age, double Q, double BSA) {
+        if(Q==-1){
+            return -1;
+        }
+        else if ((scr/Q)>.5){
+            double FAS;
+            if (age<40){
+                FAS = 107.3 / (scr / Q) * (1 - exp(-age / 0.5));
+            } else {
+                FAS = (107.3 / (scr / Q)) * pow(0.988, age - 40);
+            }
+            if (BSA != 0){
+                return FAS * 1.73 / BSA;
+            }else{
+                return FAS;
+            }
+        }else{
+            return -1;
+        }
+    }
+
+    public double calculateBSA(double hgt, double wgt){
+        if (hgt == -1 | wgt == -1){
+            return 0;
+        }else {
+            return 0.007184 * pow(hgt, 0.725) * pow(wgt, 0.425);
+        }
     }
 
     /*
@@ -216,19 +250,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     public double parseDouble(EditText text, boolean required) {
-        String stringVal = text.toString();
+        String stringVal = text.getText().toString();
         double value;
         try {
             value = Double.parseDouble(stringVal);
-            return value;
-        } catch (IllegalFormatException e) {
+        } catch (NumberFormatException e) {
             if (required) {
                 text.setError("Enter valid " + text.getHint());
-                return -1;
-            } else {
-                return 0;
             }
+            return -1;
         }
+        return value;
 
     }
     //linde is een traag kindje

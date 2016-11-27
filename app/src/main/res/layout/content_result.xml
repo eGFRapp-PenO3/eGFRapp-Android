@@ -21,28 +21,68 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/group_FAS"
+            android:visibility="visible"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_FAS"
-                android:textSize="12pt"
-                android:layout_weight="1"
-                />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_FAS"
+                    android:textSize="12pt"
+                    android:layout_weight="1"
+                    />
+                <TextView
+                    android:id="@+id/res_FAS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="12pt"
+                    android:textColor="@color/colorPrimary"
+                    />
+            </LinearLayout>
             <TextView
-                android:id="@+id/res_FAS"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="12pt"
-                android:textColor="@color/colorPrimary"
-                />
+                android:text="@string/extra_FAS" />
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/extra_FAS" />
+            android:orientation="vertical"
+            android:id="@+id/group_FASL"
+            android:visibility="visible"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_FASL"
+                    android:textSize="12pt"
+                    android:layout_weight="1"
+                    />
+                <TextView
+                    android:id="@+id/res_FASL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="12pt"
+                    android:textColor="@color/colorPrimary"
+                    />
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/extra_FASL" />
+        </LinearLayout>
 
     </LinearLayout>
 
