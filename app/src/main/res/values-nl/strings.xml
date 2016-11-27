@@ -6,11 +6,13 @@
     <string name="hint_bsa">Lichaamsoppervlakte (BSA)</string>
     <string name="hint_hgt">Lengte (cm)</string>
     <string name="hint_patID">ID Patiënt</string>
-    <string name="hint_wgt">Gewicht</string>
+    <string name="hint_wgt">Gewicht (kg)</string>
     <string name="navigation_drawer_close">Sluit Navigatiemenu</string>
     <string name="navigation_drawer_open">Open Navigatiemenu</string>
-    <string name="text_FAS"></string>
+    <string name="text_FAS">FAS uit leeftijd</string>
     <string name="title_activity_result">Resultaten</string>
-    <string name="unit_age">jaren</string>
     <string name="unit_bsa"></string>
+    <string name="text_FASL">FAS uit lengte</string>
+    <string name="extra_FAS">Full Age Spectrum berekend uit leeftijd</string>
+    <string name="extra_FASL">Full Age Spectrum berekend uit lengte</string>
 </resources>
