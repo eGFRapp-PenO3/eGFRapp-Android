@@ -3,12 +3,13 @@
     <string name="app_name">eGFR</string>
     <string name="action_settings">Paramètres</string>
     <string name="btn_patID">Ramener des données</string>
-    <string name="hint_age">Age</string>
+    <string name="hint_age">Age (ans)</string>
     <string name="hint_bsa">Surface corporelle (BSA)</string>
     <string name="hint_hgt">Hauteur (cm)</string>
     <string name="hint_patID">Patient ID</string>
-    <string name="hint_wgt">Poids</string>
-    <string name="navigation_drawer_close">Ferme</string>
-    <string name="navigation_drawer_open">Lance</string>
+    <string name="hint_wgt">Poids (kg)</string>
+    <string name="navigation_drawer_close">Ferme menu de navigation</string>
+    <string name="navigation_drawer_open">Lance menu de navigation</string>
     <string name="title_activity_result">Résultats</string>
+    <string name="unit_age">ans</string>
 </resources>

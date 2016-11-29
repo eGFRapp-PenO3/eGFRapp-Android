@@ -2,16 +2,16 @@
 <resources>
     <string name="app_name">eGFR</string>
     <string name="action_settings">Instellingen</string>
-    <string name="hint_age">Leeftijd</string>
+    <string name="hint_age">Leeftijd (jaren)</string>
     <string name="hint_bsa">Lichaamsoppervlakte (BSA)</string>
     <string name="hint_hgt">Lengte (cm)</string>
     <string name="hint_patID">ID Patiënt</string>
-    <string name="hint_wgt">Gewicht</string>
+    <string name="hint_wgt">Gewicht (kg)</string>
     <string name="navigation_drawer_close">Sluit navigatiemenu</string>
     <string name="navigation_drawer_open">Open navigatiemenu</string>
     <string name="text_FAS"></string>
     <string name="title_activity_result">Resultaten</string>
-    <string name="unit_age">jaar</string>
+    <string name="unit_age">jaren</string>
     <string name="unit_bsa"></string>
     <string name="btn_patID">Gegevens ophalen</string>
 </resources>

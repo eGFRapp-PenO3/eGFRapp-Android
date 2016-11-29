@@ -10,7 +10,7 @@
     <string name="unit_patID" translatable="false"></string>
     <string name="btn_patID">Fetch</string>
 
-    <string name="hint_age">Age</string>
+    <string name="hint_age">Age (years)</string>
     <string name="unit_age">years</string>
 
     <string name="hint_scr" translatable="false">Serum Creatinine</string>
@@ -19,7 +19,7 @@
     <string name="hint_hgt">Height (cm)</string>
     <string name="unit_hgt" translatable="false">cm</string>
 
-    <string name="hint_wgt">Weight</string>
+    <string name="hint_wgt">Weight (kg)</string>
     <string name="unit_wgt" translatable="false">kg</string>
 
     <string name="hint_bsa">Body Surface Area</string>
