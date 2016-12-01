@@ -70,6 +70,14 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/cysc"
+                android:inputType="numberDecimal"
+                android:hint="@string/hint_cysc"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/hgt"
                 android:inputType="number"
                 android:hint="@string/hint_hgt"

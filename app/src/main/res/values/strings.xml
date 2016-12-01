@@ -16,6 +16,9 @@
     <string name="hint_scr" translatable="false">Serum Creatinine</string>
     <string name="unit_scr" translatable="false">mg/dL</string>
 
+    <string name="hint_cysc" translatable="false">Serum Cystatine C</string>
+    <string name="unit_cysc" translatable="false">mg/dL</string>
+
     <string name="hint_hgt">Height (cm)</string>
     <string name="unit_hgt" translatable="false">cm</string>
 
@@ -34,6 +37,8 @@
     </string-array>
     <string name="title_activity_result">Results</string>
     <string name="title_activity_settings">Settings</string>
+
+    <string name="button_go">GO!</string>
 
     <!-- Strings related to Settings -->
 
