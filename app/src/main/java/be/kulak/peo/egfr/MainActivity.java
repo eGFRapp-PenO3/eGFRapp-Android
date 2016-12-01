@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.IllegalFormatException;
 
 import static java.lang.Math.exp;
+import static java.lang.Math.log;
 import static java.lang.Math.pow;
 
 public class MainActivity extends AppCompatActivity
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     double hgt;
     double wgt;
     double age;
-    double[] result = new double[2];
+    double[] result = new double[6];
 
     EditText mPatID;
     EditText mAge;
@@ -157,48 +158,114 @@ public class MainActivity extends AppCompatActivity
         sex = mSex.getSelectedItemPosition() == 1;
         scr = parseDouble(mScr, true);
         age = parseDouble(mAge, true);
-        hgt = parseDouble(mHgt, false)/100;
+        hgt = parseDouble(mHgt, false) / 100;
         wgt = parseDouble(mWgt, false);
-        if(scr==-1 | age==-1){
+        if (scr == -1 | age == -1) {
             return false;
         }
         double Q = calculateQ(sex, age, 0);
         double QL = calculateQ(sex, age, hgt);
         double BSA = calculateBSA(hgt, wgt);
-        double FAS = calculateFAS(scr, age, Q, BSA);
-        double FAS_QL = calculateFAS(scr, age, QL, BSA);
-        result[0] = FAS;
-        result[1] = FAS_QL;
+
+        result[0] = calculateFAS(scr, age, Q);
+        result[1] = calculateFAS(scr, age, QL);
+        result[2] = (age > 18) ? calculateCKDEPI(age, sex, scr) : -1;
+        result[3] = (age > 18) ? calculateMDRD(age, sex, scr) : -1;
+        result[4] = (age > 70) ? calculateBIS1(age, sex, scr) : -1;
+        result[5] = calculateLM(age, sex, scr);
+
+
+        result = (BSA == 0) ? result : applyBSA(result, BSA);
         return true;
     }
 
-    public double calculateFAS(double scr, double age, double Q, double BSA) {
-        if(Q==-1){
+    public double calculateFAS(double scr, double age, double Q) {
+        if (Q == -1) {
             return -1;
-        }
-        else if ((scr/Q)>.5){
-            double FAS;
-            if (age<40){
-                FAS = 107.3 / (scr / Q) * (1 - exp(-age / 0.5));
+        } else if ((scr / Q) > .5) {
+            if (age < 40) {
+                return 107.3 / (scr / Q) * (1 - exp(-age / 0.5));
             } else {
-                FAS = (107.3 / (scr / Q)) * pow(0.988, age - 40);
+                return (107.3 / (scr / Q)) * pow(0.988, age - 40);
             }
-            if (BSA != 0){
-                return FAS * 1.73 / BSA;
-            }else{
-                return FAS;
-            }
-        }else{
+        } else {
             return -1;
         }
     }
 
-    public double calculateBSA(double hgt, double wgt){
-        if (hgt == -1 | wgt == -1){
+    public double calculateCKDEPI(double age, boolean sex, double scr) {
+        if (sex) {
+            if (scr < .7) {
+                return 141 * pow(scr / .9, -.411) * pow(0.993, age);
+            } else {
+                return 141 * pow(scr / 0.9, -1.209) * pow(0.993, age);
+            }
+        } else {
+            if (scr < .9) {
+                return 141 * pow(scr / .9, -.411) * pow(0.993, age);
+            } else {
+                return 141 * pow(scr / 0.9, -1.209) * pow(0.993, age);
+            }
+        }
+    }
+
+    public double calculateMDRD(double age, boolean sex, double scr) {
+        if (sex) {
+            return 175 * pow(scr, -1.154) * pow(age, -0.203) * 0.742;
+        } else {
+            return 175 * pow(scr, -1.154) * pow(age, -0.203);
+        }
+    }
+
+    public double calculateBIS1(double age, boolean sex, double scr) {
+        if (sex) {
+            return 3736 * pow(scr, -.87) * pow(age, -.95) * .82;
+        } else {
+            return 3736 * pow(scr, -.87) * pow(age, -.95);
+        }
+    }
+
+    public double calculateLM(double age, boolean sex, double scr) {
+        if (scr * 88.4 < 150) {
+            if (sex) {
+                return exp(4.62 - 0.0112 * scr * 88.4 - 0.0124 * age + 0.339 * log(age) - 0.226);
+            } else {
+                return exp(4.62 - 0.0112 * scr * 88.4 - 0.0124 * age + 0.339 * log(age));
+            }
+        } else {
+            if (sex) {
+                return exp(8.17 + 0.0005 * scr * 88.4 - 1.07 * log(scr * 88.4) - 0.0124 * age + 0.339 * log(age) - 0.226);
+            } else {
+                return exp(8.17 + 0.0005 * scr * 88.4 - 1.07 * log(scr * 88.4) - 0.0124 * age + 0.339 * log(age));
+            }
+        }
+    }
+
+
+
+    public double calculateBSA(double hgt, double wgt) {
+        if (hgt == -1 | wgt == -1) {
             return 0;
-        }else {
+        } else {
             return 0.007184 * pow(hgt, 0.725) * pow(wgt, 0.425);
         }
+    }
+
+
+    /*
+    multiplies all elements of array with double BSA,
+    except if element is -1 (aka N/A)
+     */
+    public double[] applyBSA(double[] result, double BSA) {
+        double[] BSAresult = new double[result.length];
+        for (int i = 0; i < result.length; i++) {
+            if (result[i] == -1) {
+                BSAresult[i] = -1;
+            } else {
+                BSAresult[i] = result[i] * 1.73 / BSA;
+            }
+        }
+        return BSAresult;
     }
 
     /*
