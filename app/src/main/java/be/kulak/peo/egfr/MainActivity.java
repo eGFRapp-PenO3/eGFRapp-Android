@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     double hgt;
     double wgt;
     double age;
-    double[] result = new double[4];
+    double[] result = new double[6];
 
     EditText mPatID;
     EditText mAge;
