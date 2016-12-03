@@ -19,7 +19,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.IllegalFormatException;
+import java.util.Map;
 
 import static java.lang.Math.exp;
 import static java.lang.Math.log;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public final static String extra_results = "be.kulak.peo.egfr.results";
+
+    public final static Map<String,String> ResultStrings = new HashMap<String,String>();
 
     String patID;
     double scr;
@@ -69,6 +73,8 @@ public class MainActivity extends AppCompatActivity
         mHgt = (EditText) findViewById(R.id.hgt);
         mWgt = (EditText) findViewById(R.id.wgt);
         mSex = (Spinner) findViewById(R.id.sex);
+
+        fillResultMap();
 
         FloatingActionButton fab_reset = (FloatingActionButton) findViewById(R.id.fab_reset);
         fab_reset.setOnClickListener(new View.OnClickListener() {
@@ -331,4 +337,12 @@ public class MainActivity extends AppCompatActivity
 
     }
     //linde is een traag kindje
+
+    public void fillResultMap(){
+        String[] keys = getResources().getStringArray(R.array.result_key);
+        String[] values = getResources().getStringArray(R.array.result_value);
+        for(int i = 0; i < keys.length; i++){
+            ResultStrings.put(keys[i],values[i]);
+        }
+    }
 }
