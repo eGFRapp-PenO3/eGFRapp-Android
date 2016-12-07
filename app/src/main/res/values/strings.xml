@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_reset">Reset</string>
 
     <string name="hint_patID">Patient ID</string>
     <string name="btn_patID">Fetch</string>
@@ -27,5 +28,24 @@
     <string name="text_FASL">FAS By Height</string>
     <string name="extra_FASL">Full Age Spectrum calculated by height</string>
 
+    <string-array name="result_key">
+        <item>FAS</item>
+        <item>FASL</item>
+        <item>CKDEPI</item>
+        <item>MDRD</item>
+        <item>BIS1</item>
+        <item>LM</item>
+        <item>CG</item>
+    </string-array>
+
+    <string-array name="result_value">
+        <item>FAS By Age:Full Age Spectrum calculated by age</item>
+        <item>FAS By Height:Full Age Spectrum calculated by height</item>
+        <item>CKD-EPI</item>
+        <item>MDRD</item>
+        <item>BIS1</item>
+        <item>Lund-Malmö</item>
+        <item>Cockcroft-Gault</item>
+    </string-array>
 
 </resources>

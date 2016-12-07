@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -22,16 +25,18 @@ public class ResultActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        formatResult(results[0], (TextView) findViewById(R.id.res_FAS));
-        formatResult(results[1], (TextView) findViewById(R.id.res_FASL));
-    }
+        ArrayList<Result> resultArray = new ArrayList<Result>();
+        ResultAdapter adapter = new ResultAdapter(this, resultArray);
 
-    private void formatResult(double result, TextView view){
-        if (result==-1){
-            LinearLayout p = (LinearLayout) view.getParent().getParent();
-            p.setVisibility(View.GONE);
-        }else{
-            view.setText(String.format("%.1f", result));
+        ListView resultView = (ListView) findViewById(R.id.resultView);
+        resultView.setAdapter(adapter);
+
+        String[] keys = getResources().getStringArray(R.array.result_key);
+        for (int i = 0; i < results.length; i++){
+            if(results[i] != -1){
+                Result Item = new Result(keys[i], results[i]);
+                adapter.add(Item);
+            }
         }
     }
 
