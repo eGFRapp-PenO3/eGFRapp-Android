@@ -5,6 +5,7 @@ import android.nfc.FormatException;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,8 +28,7 @@ import static java.lang.Math.exp;
 import static java.lang.Math.log;
 import static java.lang.Math.pow;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity{
 
     public final static String extra_results = "be.kulak.peo.egfr.results";
 
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        //create variable objects
         mPatID = (EditText) findViewById(R.id.patID);
         mAge = (EditText) findViewById(R.id.age);
         mScr = (EditText) findViewById(R.id.scr);
@@ -74,20 +75,8 @@ public class MainActivity extends AppCompatActivity
         mWgt = (EditText) findViewById(R.id.wgt);
         mSex = (Spinner) findViewById(R.id.sex);
 
+        //create hashmap with result data
         fillResultMap();
-
-        FloatingActionButton fab_reset = (FloatingActionButton) findViewById(R.id.fab_reset);
-        fab_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPatID.setText("");
-                mAge.setText("");
-                mScr.setText("");
-                mHgt.setText("");
-                mWgt.setText("");
-                mSex.setSelection(0);
-            }
-        });
 
         Button btnPatID = (Button) findViewById(R.id.btn_patID);
         btnPatID.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +86,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        /*
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -105,6 +95,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        */
+
+
+
 
         Spinner sexSpinner = (Spinner) findViewById(R.id.sex);
         //sexSpinner.getOnItemSelectedListener(this);
@@ -114,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         sexSpinner.setAdapter(adapter);
     }
 
+    /*
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -122,6 +117,13 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+    */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
@@ -134,11 +136,19 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_reset) {
+            mPatID.setText("");
+            mAge.setText("");
+            mScr.setText("");
+            mHgt.setText("");
+            mWgt.setText("");
+            mSex.setSelection(0);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -157,6 +167,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    */
 
     public boolean calculateGFR() {
         patID = mPatID.getText().toString();
