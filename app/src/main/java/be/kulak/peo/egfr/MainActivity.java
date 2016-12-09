@@ -2,17 +2,11 @@ package be.kulak.peo.egfr;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.FormatException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -24,7 +18,6 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IllegalFormatException;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
 
     public final static String extra_results = "be.kulak.peo.egfr.results";
 
-    public final static Map<String,String> ResultStrings = new HashMap<String,String>();
+    public final static Map<String,String> ResultStrings = new HashMap<>();
 
     String patID;
     double scr;
@@ -98,17 +91,6 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        /*
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        */
-
         Spinner sexSpinner = (Spinner) findViewById(R.id.sex);
         //sexSpinner.getOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -116,18 +98,6 @@ public class MainActivity extends AppCompatActivity{
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sexSpinner.setAdapter(adapter);
     }
-
-    /*
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -159,27 +129,6 @@ public class MainActivity extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
-
-    /*
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_calc) {
-
-        } else if (id == R.id.nav_hist) {
-
-        } else if (id == R.id.nav_set) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-    */
 
     public boolean calculateGFR() {
         patID = mPatID.getText().toString();
@@ -367,7 +316,6 @@ public class MainActivity extends AppCompatActivity{
         return value;
 
     }
-    //linde is een traag kindje
 
     public void fillResultMap(){
         String[] keys = getResources().getStringArray(R.array.result_key);
