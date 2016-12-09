@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +12,14 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="be.kulak.peo.egfr.ResultActivity"
     tools:showIn="@layout/activity_result"
-    android:id="@+id/resultView"
-    >
+    android:orientation="vertical">
 
-</ListView>
+    <include layout="@layout/info_patient"/>
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/resultList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+</LinearLayout>

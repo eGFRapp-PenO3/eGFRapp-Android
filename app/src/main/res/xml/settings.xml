@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <MultiSelectListPreference
+        android:title="@string/settings_formulae_title"
+        android:entries="@array/settings_formulae_entries"
+        android:entryValues="@array/settings_formulae_values"
+        android:key="formulae"
+        />
+    <MultiSelectListPreference
+        android:title="@string/settings_markers_title"
+        android:entries="@array/settings_markers_entries"
+        android:entryValues="@array/settings_markers_values"
+        android:key="markers"
+        />
+    <SwitchPreference
+        android:title="@string/settings_si_title"
+        android:hint="@string/settings_si_hint"
+        android:key="si"
+        />
+</PreferenceScreen>

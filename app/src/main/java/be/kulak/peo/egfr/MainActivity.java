@@ -1,8 +1,10 @@
 package be.kulak.peo.egfr;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.FormatException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -21,8 +23,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IllegalFormatException;
 import java.util.Map;
+import java.util.Set;
 
 import static java.lang.Math.exp;
 import static java.lang.Math.log;
@@ -40,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
     double hgt;
     double wgt;
     double age;
-    double[] result = new double[6];
+    double[] result = new double[7];
 
     EditText mPatID;
     EditText mAge;
@@ -49,12 +53,17 @@ public class MainActivity extends AppCompatActivity{
     EditText mWgt;
     Spinner mSex;
 
+    Set<String> formulae;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+
         FloatingActionButton fab_calc = (FloatingActionButton) findViewById(R.id.fab_calc);
         fab_calc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +83,9 @@ public class MainActivity extends AppCompatActivity{
         mHgt = (EditText) findViewById(R.id.hgt);
         mWgt = (EditText) findViewById(R.id.wgt);
         mSex = (Spinner) findViewById(R.id.sex);
+
+        //settings for formula selection
+        formulae = settings.getStringSet("formulae", new HashSet<String>());
 
         //create hashmap with result data
         fillResultMap();
@@ -96,9 +108,6 @@ public class MainActivity extends AppCompatActivity{
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         */
-
-
-
 
         Spinner sexSpinner = (Spinner) findViewById(R.id.sex);
         //sexSpinner.getOnItemSelectedListener(this);
@@ -135,6 +144,8 @@ public class MainActivity extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
             return true;
         } else if (id == R.id.action_reset) {
             mPatID.setText("");
@@ -143,6 +154,7 @@ public class MainActivity extends AppCompatActivity{
             mHgt.setText("");
             mWgt.setText("");
             mSex.setSelection(0);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -184,13 +196,13 @@ public class MainActivity extends AppCompatActivity{
         double QL = calculateQ(sex, age, hgt);
         double BSA = calculateBSA(hgt, wgt);
 
-        result[0] = calculateFAS(scr, age, Q);
-        result[1] = calculateFAS(scr, age, QL);
-        result[2] = (age > 18) ? calculateCKDEPI(age, sex, scr) : -1;
-        result[3] = (age > 18) ? calculateMDRD(age, sex, scr) : -1;
-        result[4] = (age > 70) ? calculateBIS1(age, sex, scr) : -1;
-        result[5] = calculateLM(age, sex, scr);
-
+        result[0] = formulae.contains("FAS") ? calculateFAS(scr, age, Q) : -1;
+        result[1] = formulae.contains("FASL") ? calculateFAS(scr, age, QL) : -1;
+        result[2] = (age > 18) && formulae.contains("EPI") ? calculateCKDEPI(age, sex, scr) : -1;
+        result[3] = (age > 18) && formulae.contains("MDRD") ? calculateMDRD(age, sex, scr) : -1;
+        result[4] = (age > 70) && formulae.contains("BIS1") ? calculateBIS1(age, sex, scr) : -1;
+        result[5] = formulae.contains("LM") ? calculateLM(age, sex, scr) : -1;
+        result[6] = formulae.contains("CG") && wgt!=-1 ? calculateCG(wgt, age, sex, scr) : -1;
 
         result = (BSA == 0) ? result : applyBSA(result, BSA);
         return true;
@@ -258,16 +270,24 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-
+    public double calculateCG(double wgt, double age, boolean sex, double scr) {
+        if (sex)
+        {
+            return (140 - age) * wgt / (72 * scr) * 0.85;
+        }
+        else
+        {
+            return (140 - age) * wgt / (72 * scr);
+        }
+    }
 
     public double calculateBSA(double hgt, double wgt) {
         if (hgt == -1 | wgt == -1) {
             return 0;
         } else {
-            return 0.007184 * pow(hgt, 0.725) * pow(wgt, 0.425);
+            return 0.007184 * pow((hgt*100), 0.725) * pow(wgt, 0.425);
         }
     }
-
 
     /*
     multiplies all elements of array with double BSA,
@@ -279,7 +299,7 @@ public class MainActivity extends AppCompatActivity{
             if (result[i] == -1) {
                 BSAresult[i] = -1;
             } else {
-                BSAresult[i] = result[i] * 1.73 / BSA;
+                BSAresult[i] = (result[i] * 1.73) / BSA;
             }
         }
         return BSAresult;
