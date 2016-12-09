@@ -9,6 +9,8 @@
 
     <string name="hint_patID">Patient ID</string>
     <string name="btn_patID">Fetch</string>
+    <string name="hint_patFN">First Name</string>
+    <string name="hint_patLN">Last Name</string>
 
     <string name="hint_age">Age</string>
     <string name="hint_scr" translatable="false">Serum Creatinine</string>
@@ -18,15 +20,24 @@
     <string name="text_FAS">FAS By Age</string>
     <string name="extra_FAS">Full Age Spectrum calculated by age</string>
 
+    <string name="info_patient_title">Patient Information</string>
+
     <string-array name="array_sex">
         <item>M</item>
         <item>F</item>
     </string-array>
+
     <string name="title_activity_result">Results</string>
     <string name="title_activity_settings">Settings</string>
     <string name="hint_bsa"></string>
     <string name="text_FASL">FAS By Height</string>
     <string name="extra_FASL">Full Age Spectrum calculated by height</string>
+
+    <string name="settings_formulae_title">Formulae</string>
+    <string name="settings_markers_title">Markers</string>
+
+    <string name="settings_si_title">SI Units</string>
+    <string name="settings_si_hint">Use SI units as input</string>
 
     <string-array name="result_key">
         <item>FAS</item>
@@ -46,6 +57,36 @@
         <item>BIS1</item>
         <item>Lund-Malmö</item>
         <item>Cockcroft-Gault</item>
+    </string-array>
+
+    <string-array name="settings_formulae_entries">
+        <item>FAS By Age</item>
+        <item>FAS By Height</item>
+        <item>CKD-EPI</item>
+        <item>MDRD</item>
+        <item>BIS1</item>
+        <item>Lund-Malmö</item>
+        <item>Cockcroft-Gault</item>
+    </string-array>
+
+    <string-array name="settings_formulae_values">
+        <item>FAS</item>
+        <item>FASL</item>
+        <item>EPI</item>
+        <item>MDRD</item>
+        <item>BIS1</item>
+        <item>LM</item>
+        <item>CG</item>
+    </string-array>
+
+    <string-array name="settings_markers_entries">
+        <item>Serum Creatinine</item>
+        <item>Cistatine-C</item>
+    </string-array>
+
+    <string-array name="settings_markers_values">
+        <item>SC</item>
+        <item>CC</item>
     </string-array>
 
 </resources>

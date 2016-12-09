@@ -4,10 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -28,7 +25,7 @@ public class ResultActivity extends AppCompatActivity {
         ArrayList<Result> resultArray = new ArrayList<Result>();
         ResultAdapter adapter = new ResultAdapter(this, resultArray);
 
-        ListView resultView = (ListView) findViewById(R.id.resultView);
+        ListView resultView = (ListView) findViewById(R.id.resultList);
         resultView.setAdapter(adapter);
 
         String[] keys = getResources().getStringArray(R.array.result_key);
