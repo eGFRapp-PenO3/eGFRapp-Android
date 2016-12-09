@@ -91,12 +91,10 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        Spinner sexSpinner = (Spinner) findViewById(R.id.sex);
-        //sexSpinner.getOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.array_sex, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sexSpinner.setAdapter(adapter);
+        mSex.setAdapter(adapter);
     }
 
     @Override
