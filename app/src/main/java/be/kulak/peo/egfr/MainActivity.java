@@ -1,5 +1,6 @@
 package be.kulak.peo.egfr;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity{
     boolean sex;
     double hgt;
     double wgt;
-    double age;
+    public static double age;
     double[] result = new double[7];
 
     EditText mPatID;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
     EditText mHgt;
     EditText mWgt;
     Spinner mSex;
+    public static Button mAgeBtn;
 
     Set<String> formulae;
 
@@ -71,11 +73,11 @@ public class MainActivity extends AppCompatActivity{
 
         //create variable objects
         mPatID = (EditText) findViewById(R.id.patID);
-        mAge = (EditText) findViewById(R.id.age);
         mScr = (EditText) findViewById(R.id.scr);
         mHgt = (EditText) findViewById(R.id.hgt);
         mWgt = (EditText) findViewById(R.id.wgt);
         mSex = (Spinner) findViewById(R.id.sex);
+        mAgeBtn = (Button) findViewById(R.id.btn_age);
 
         //settings for formula selection
         formulae = settings.getStringSet("formulae", new HashSet<String>());
@@ -95,6 +97,11 @@ public class MainActivity extends AppCompatActivity{
                 this, R.array.array_sex, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSex.setAdapter(adapter);
+    }
+
+    public void showAgePickerDialog(View v){
+        AgePickerFragment ageFragment = new AgePickerFragment();
+        ageFragment.show(getFragmentManager(), "Birthdate");
     }
 
     @Override
@@ -133,10 +140,9 @@ public class MainActivity extends AppCompatActivity{
         // true = female
         sex = mSex.getSelectedItemPosition() == 1;
         scr = parseDouble(mScr, true);
-        age = parseDouble(mAge, true);
         hgt = parseDouble(mHgt, false) / 100;
         wgt = parseDouble(mWgt, false);
-        if (scr == -1 | age == -1) {
+        if (scr == -1 | age < .1) {
             return false;
         }
         double Q = calculateQ(sex, age, 0);

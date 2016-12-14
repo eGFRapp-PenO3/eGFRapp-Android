@@ -63,27 +63,24 @@
                     />
             </LinearLayout>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/age"
-                android:inputType="date"
-                android:hint="@string/hint_age"
-                />
-
             <Button
+                android:paddingLeft="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="@string/hint_age_init"
                 android:textSize="8pt"
+                android:id="@+id/btn_age"
                 android:textColor="@android:color/tertiary_text_light"
+                android:onClick="showAgePickerDialog"
                 style="?android:attr/spinnerStyle"
                 />
 
             <Spinner
+                android:paddingLeft="4dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:textSize="8pt"
+                android:textColor="@android:color/tertiary_text_light"
                 android:id="@+id/sex"
                 />
 

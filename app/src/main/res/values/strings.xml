@@ -12,7 +12,8 @@
     <string name="hint_patFN">First Name</string>
     <string name="hint_patLN">Last Name</string>
 
-    <string name="hint_age">Age</string>
+    <string name="hint_age_init">Tap to set birth date</string>
+    <string name="hint_age">"Birthdate: "</string>
     <string name="hint_scr" translatable="false">Serum Creatinine</string>
     <string name="hint_hgt">Height (cm)</string>
     <string name="hint_wgt">Weight (kg)</string>
@@ -23,8 +24,8 @@
     <string name="info_patient_title">Patient Information</string>
 
     <string-array name="array_sex">
-        <item>M</item>
-        <item>F</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 
     <string name="title_activity_result">Results</string>
