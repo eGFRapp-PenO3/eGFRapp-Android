@@ -8,10 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="HoloDatePicker" parent="android:Holo.Light">
-        <item name="android:datePickerStyle">@android:style/Widget.DatePicker</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

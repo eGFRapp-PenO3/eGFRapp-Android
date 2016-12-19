@@ -1,6 +1,5 @@
 package be.kulak.peo.egfr;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,8 +16,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,21 +35,26 @@ public class MainActivity extends AppCompatActivity{
 
     String patID;
     double scr;
+    boolean scrEnabled;
+    double cisc;
+    boolean ciscEnabled;
     boolean sex;
     double hgt;
     double wgt;
     public static double age;
-    double[] result = new double[7];
+    double[] result = new double[getResources().getStringArray(R.array.result_key).length];
 
     EditText mPatID;
     EditText mAge;
     EditText mScr;
+    EditText mCisC;
     EditText mHgt;
     EditText mWgt;
     Spinner mSex;
     public static Button mAgeBtn;
 
     Set<String> formulae;
+    Set<String> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,7 @@ public class MainActivity extends AppCompatActivity{
         //create variable objects
         mPatID = (EditText) findViewById(R.id.patID);
         mScr = (EditText) findViewById(R.id.scr);
+        mCisC = (EditText) findViewById(R.id.cisc);
         mHgt = (EditText) findViewById(R.id.hgt);
         mWgt = (EditText) findViewById(R.id.wgt);
         mSex = (Spinner) findViewById(R.id.sex);
@@ -81,6 +88,13 @@ public class MainActivity extends AppCompatActivity{
 
         //settings for formula selection
         formulae = settings.getStringSet("formulae", new HashSet<String>());
+        markers = settings.getStringSet("markers", new HashSet<String>());
+
+        scrEnabled = markers.contains("scr");
+        ciscEnabled = markers.contains("cisc");
+
+        if (!scrEnabled){mScr.setVisibility(View.GONE);}
+        if (!ciscEnabled){mCisC.setVisibility(View.GONE);};
 
         //create hashmap with result data
         fillResultMap();
@@ -139,28 +153,31 @@ public class MainActivity extends AppCompatActivity{
         patID = mPatID.getText().toString();
         // true = female
         sex = mSex.getSelectedItemPosition() == 1;
-        scr = parseDouble(mScr, true);
+        scr = scrEnabled ? parseDouble(mScr, true) : -1;
+        cisc = ciscEnabled ? parseDouble(mCisC, true) : -1;
         hgt = parseDouble(mHgt, false) / 100;
         wgt = parseDouble(mWgt, false);
         if (scr == -1 | age < .1) {
             return false;
         }
-        double Q = calculateQ(sex, age, 0);
-        double QL = calculateQ(sex, age, hgt);
+        double[] var = {scr, scr, cisc};
+        double[] Q = {calculateQSCr(sex, age, 0),calculateQSCr(sex, age, hgt),calculateQCisC(age)};
         double BSA = calculateBSA(hgt, wgt);
 
-        result[0] = formulae.contains("FAS") ? calculateFAS(scr, age, Q) : -1;
-        result[1] = formulae.contains("FASL") ? calculateFAS(scr, age, QL) : -1;
-        result[2] = (age > 18) && formulae.contains("EPI") ? calculateCKDEPI(age, sex, scr) : -1;
-        result[3] = (age > 18) && formulae.contains("MDRD") ? calculateMDRD(age, sex, scr) : -1;
-        result[4] = (age > 70) && formulae.contains("BIS1") ? calculateBIS1(age, sex, scr) : -1;
-        result[5] = formulae.contains("LM") ? calculateLM(age, sex, scr) : -1;
-        result[6] = formulae.contains("CG") && wgt!=-1 ? calculateCG(wgt, age, sex, scr) : -1;
+        result[0] =
+        result[1] = formulae.contains("FAS") ? calculateFAS(scr, age) : -1;
+        result[2] = formulae.contains("FASL") ? calculateFAS(scr, age) : -1;
+        result[3] = markers.contains("cisc") ? calculateFAS((var[2]/Q[2]),age) : -1;
+        result[4] = (age > 18) && formulae.contains("EPI") ? calculateCKDEPI(age, sex, scr) : -1;
+        result[5] = (age > 18) && formulae.contains("MDRD") ? calculateMDRD(age, sex, scr) : -1;
+        result[6] = (age > 70) && formulae.contains("BIS1") ? calculateBIS1(age, sex, scr) : -1;
+        result[7] = formulae.contains("LM") ? calculateLM(age, sex, scr) : -1;
+        result[8] = formulae.contains("CG") && wgt!=-1 ? calculateCG(wgt, age, sex, scr) : -1;
 
         result = (BSA == 0) ? result : applyBSA(result, BSA);
         return true;
     }
-
+    /*
     public double calculateFAS(double scr, double age, double Q) {
         if (Q == -1) {
             return -1;
@@ -173,6 +190,30 @@ public class MainActivity extends AppCompatActivity{
         } else {
             return -1;
         }
+    }
+    */
+    public double calculateFAS(double var, double age) {
+        if (var > .5) {
+            if (age < 40) {
+                return 107.3 / var * (1 - exp(-age / 0.5));
+            } else {
+                return (107.3 / var) * pow(0.988, age - 40);
+            }
+        } else {
+            return -1;
+        }
+    }
+
+    public double calculateFASVar(double[] mark, double[] Q){
+        List<Double> marQ = new ArrayList<>();
+        for(int i=0; i<mark.length; i++){
+            if (mark[i] != -1){
+                marQ.add(mark[i]/Q[i]);
+            }
+        }
+        double totvar = 0;
+        for (Double var : marQ) totvar += var;
+        return totvar/marQ.size();
     }
 
     public double calculateCKDEPI(double age, boolean sex, double scr) {
@@ -223,6 +264,10 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    public double calculateSchwartz(double age, boolean sex, double scr, double hgt){
+
+    }
+
     public double calculateCG(double wgt, double age, boolean sex, double scr) {
         if (sex)
         {
@@ -262,7 +307,7 @@ public class MainActivity extends AppCompatActivity{
     if height is 0 the method calculates Q based on age alone
     if -1 is returned the calculation of Q is not applicable to the set of variables
     */
-    public double calculateQ(boolean sex, double age, double hgt) {
+    public double calculateQSCr(boolean sex, double age, double hgt) {
         double a, b, c, d, e, var;
         if (age < 20) {
             // if no hgt, calculate with age
@@ -303,6 +348,18 @@ public class MainActivity extends AppCompatActivity{
             } else {
                 return -1;
             }
+        }
+    }
+
+    public double calculateQCisC(double age)
+    {
+        if (age < 70)
+        {
+            return 0.82;
+        }
+        else
+        {
+            return 0.95;
         }
     }
 

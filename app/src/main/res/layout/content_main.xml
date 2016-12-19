@@ -29,7 +29,6 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:ems="10"
                     android:id="@+id/patID"
                     android:layout_gravity="center_horizontal"
@@ -90,6 +89,14 @@
                 android:id="@+id/scr"
                 android:inputType="numberDecimal"
                 android:hint="@string/hint_scr"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cisc"
+                android:inputType="numberDecimal"
+                android:hint="@string/hint_cisc"
                 />
 
             <EditText

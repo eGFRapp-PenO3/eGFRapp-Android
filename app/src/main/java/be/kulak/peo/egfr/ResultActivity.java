@@ -31,6 +31,10 @@ public class ResultActivity extends AppCompatActivity {
         String[] keys = getResources().getStringArray(R.array.result_key);
         for (int i = 0; i < results.length; i++){
             if(results[i] != -1){
+                if(keys[i]=="FASC" && results[i]!=-1){
+                    i += 3;
+
+                }
                 Result Item = new Result(keys[i], results[i]);
                 adapter.add(Item);
             }

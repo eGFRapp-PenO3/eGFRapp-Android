@@ -1,17 +1,17 @@
 package be.kulak.peo.egfr;
 
-import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.DatePicker;
-import org.joda.time.*;
+
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import static android.R.color.primary_text_light;
-import static android.app.AlertDialog.THEME_HOLO_LIGHT;
 import static be.kulak.peo.egfr.R.string.hint_age;
 
 /**
@@ -23,7 +23,7 @@ public class AgePickerFragment extends DialogFragment implements DatePickerDialo
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-        return new DatePickerDialog(getActivity(), R.style.HoloDatePicker, this, 1970, 0, 1);
+        return new DatePickerDialog(getActivity(), this, 1970, 0, 1);
     }
 
     @Override

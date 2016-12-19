@@ -6,12 +6,6 @@
         android:entryValues="@array/settings_formulae_values"
         android:key="formulae"
         />
-    <MultiSelectListPreference
-        android:title="@string/settings_markers_title"
-        android:entries="@array/settings_markers_entries"
-        android:entryValues="@array/settings_markers_values"
-        android:key="markers"
-        />
     <SwitchPreference
         android:title="@string/settings_si_title"
         android:hint="@string/settings_si_hint"

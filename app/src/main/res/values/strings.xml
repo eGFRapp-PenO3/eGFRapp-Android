@@ -15,6 +15,7 @@
     <string name="hint_age_init">Tap to set birth date</string>
     <string name="hint_age">"Birthdate: "</string>
     <string name="hint_scr" translatable="false">Serum Creatinine</string>
+    <string name="hint_cisc" translatable="false">Cistatine-C</string>
     <string name="hint_hgt">Height (cm)</string>
     <string name="hint_wgt">Weight (kg)</string>
 
@@ -41,8 +42,10 @@
     <string name="settings_si_hint">Use SI units as input</string>
 
     <string-array name="result_key">
+        <item>FASCOM</item>
         <item>FAS</item>
         <item>FASL</item>
+        <item>FASC</item>
         <item>CKDEPI</item>
         <item>MDRD</item>
         <item>BIS1</item>
@@ -51,8 +54,10 @@
     </string-array>
 
     <string-array name="result_value">
-        <item>FAS By Age:Full Age Spectrum calculated by age</item>
-        <item>FAS By Height:Full Age Spectrum calculated by height</item>
+        <item>FAS Combi:Full Age Spectrum</item>
+        <item>FAS:Full Age Spectrum</item>
+        <item>FAS Height:Full Age Spectrum calculated with height</item>
+        <item>FAS Cis-C:Full Age Spectrum calculated with Cistatine-C</item>
         <item>CKD-EPI</item>
         <item>MDRD</item>
         <item>BIS1</item>
@@ -61,8 +66,10 @@
     </string-array>
 
     <string-array name="settings_formulae_entries">
-        <item>FAS By Age</item>
-        <item>FAS By Height</item>
+        <item>FAS SCr</item>
+        <item>FAS SCr Height</item>
+        <item>FAS Cis-C</item>
+        <item>FAS Combi</item>
         <item>CKD-EPI</item>
         <item>MDRD</item>
         <item>BIS1</item>
@@ -86,8 +93,8 @@
     </string-array>
 
     <string-array name="settings_markers_values">
-        <item>SC</item>
-        <item>CC</item>
+        <item>scr</item>
+        <item>cisc</item>
     </string-array>
 
 </resources>
