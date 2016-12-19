@@ -30,10 +30,12 @@ public class ResultAdapter extends ArrayAdapter<Result> {
         TextView resultName = (TextView) convertView.findViewById(R.id.item_result_name);
         TextView resultHint = (TextView) convertView.findViewById(R.id.item_result_extra);
         TextView resultValue = (TextView) convertView.findViewById(R.id.item_result_value);
+        TextView resultUnit = (TextView) convertView.findViewById(R.id.item_result_unit);
         // Populate the data into the template view using the data object
         resultName.setText(result.formula);
         resultValue.setText(result.value);
         resultHint.setText(result.hint);
+        resultUnit.setText(result.formula == "Cockcroft-Gault" ? "mL/min" : "mL/min/1.73 m²");
         // Return the completed view to render on screen
         return convertView;
     }

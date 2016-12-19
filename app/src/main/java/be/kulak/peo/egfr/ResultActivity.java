@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -16,7 +18,15 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         Intent resultIntent = getIntent();
-        double[] results = resultIntent.getDoubleArrayExtra(MainActivity.extra_results);
+        double[] results = resultIntent.getDoubleArrayExtra(MainActivity.extra_result);
+        String[] info = resultIntent.getStringArrayExtra(MainActivity.extra_info);
+
+        TextView patID = (TextView) findViewById(R.id.info_ID);
+        if(info[0] != "") patID.setText(getResources().getString(R.string.info_patient_id) + info[0]);
+        else patID.setVisibility(View.GONE);
+        TextView patName = (TextView) findViewById(R.id.info_name);
+        if(info[1] != " ") patName.setText(getResources().getString(R.string.info_patient_name) + info[1]);
+        else patName.setVisibility(View.GONE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -31,10 +41,6 @@ public class ResultActivity extends AppCompatActivity {
         String[] keys = getResources().getStringArray(R.array.result_key);
         for (int i = 0; i < results.length; i++){
             if(results[i] != -1){
-                if(keys[i]=="FASC" && results[i]!=-1){
-                    i += 3;
-
-                }
                 Result Item = new Result(keys[i], results[i]);
                 adapter.add(Item);
             }

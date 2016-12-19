@@ -23,29 +23,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static android.R.color.tertiary_text_light;
 import static java.lang.Math.exp;
 import static java.lang.Math.log;
 import static java.lang.Math.pow;
 
 public class MainActivity extends AppCompatActivity{
 
-    public final static String extra_results = "be.kulak.peo.egfr.results";
+    public final static String extra_result = "be.kulak.peo.egfr.result";
+    public final static String extra_info = "be.kulak.peo.egfr.info";
 
     public final static Map<String,String> ResultStrings = new HashMap<>();
 
-    String patID;
     double scr;
-    boolean scrEnabled;
     double cisc;
-    boolean ciscEnabled;
     boolean sex;
     double hgt;
     double wgt;
     public static double age;
-    double[] result = new double[getResources().getStringArray(R.array.result_key).length];
+    double[] result;
+    String[] info = new String[2];
+    boolean si;
 
     EditText mPatID;
-    EditText mAge;
+    EditText mFN;
+    EditText mLN;
     EditText mScr;
     EditText mCisC;
     EditText mHgt;
@@ -54,7 +56,6 @@ public class MainActivity extends AppCompatActivity{
     public static Button mAgeBtn;
 
     Set<String> formulae;
-    Set<String> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,8 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 if (calculateGFR()) {
                     Intent resultIntent = new Intent(getBaseContext(), ResultActivity.class);
-                    resultIntent.putExtra(extra_results, result);
+                    resultIntent.putExtra(extra_result, result);
+                    resultIntent.putExtra(extra_info, info);
                     startActivity(resultIntent);
                 }
             }
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity{
 
         //create variable objects
         mPatID = (EditText) findViewById(R.id.patID);
+        mFN = (EditText) findViewById(R.id.patFN);
+        mLN = (EditText) findViewById(R.id.patLN);
         mScr = (EditText) findViewById(R.id.scr);
         mCisC = (EditText) findViewById(R.id.cisc);
         mHgt = (EditText) findViewById(R.id.hgt);
@@ -88,16 +92,15 @@ public class MainActivity extends AppCompatActivity{
 
         //settings for formula selection
         formulae = settings.getStringSet("formulae", new HashSet<String>());
-        markers = settings.getStringSet("markers", new HashSet<String>());
-
-        scrEnabled = markers.contains("scr");
-        ciscEnabled = markers.contains("cisc");
-
-        if (!scrEnabled){mScr.setVisibility(View.GONE);}
-        if (!ciscEnabled){mCisC.setVisibility(View.GONE);};
-
+        si = settings.getBoolean("si", si);
+        mScr.setHint(getResources().getString(R.string.hint_scr) + (si ? " (μmol/L)" : " (mg/dL)"));
         //create hashmap with result data
         fillResultMap();
+
+        info[0] = mPatID.getText().toString();
+        info[1] = mFN.getText() + " " + mLN.getText();
+
+        result = new double[getResources().getStringArray(R.array.result_key).length];
 
         Button btnPatID = (Button) findViewById(R.id.btn_patID);
         btnPatID.setOnClickListener(new View.OnClickListener() {
@@ -138,8 +141,11 @@ public class MainActivity extends AppCompatActivity{
             return true;
         } else if (id == R.id.action_reset) {
             mPatID.setText("");
-            mAge.setText("");
+            mAgeBtn.setText(getResources().getString(R.string.hint_age_init));
+            mAgeBtn.setTextColor(getResources().getColor(tertiary_text_light));
+            age = 0;
             mScr.setText("");
+            mCisC.setText("");
             mHgt.setText("");
             mWgt.setText("");
             mSex.setSelection(0);
@@ -150,11 +156,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public boolean calculateGFR() {
-        patID = mPatID.getText().toString();
         // true = female
         sex = mSex.getSelectedItemPosition() == 1;
-        scr = scrEnabled ? parseDouble(mScr, true) : -1;
-        cisc = ciscEnabled ? parseDouble(mCisC, true) : -1;
+        scr = parseDouble(mScr, true);
+        scr = si ? scr/88.4 : scr;
+        cisc = parseDouble(mCisC, true);
         hgt = parseDouble(mHgt, false) / 100;
         wgt = parseDouble(mWgt, false);
         if (scr == -1 | age < .1) {
@@ -164,17 +170,23 @@ public class MainActivity extends AppCompatActivity{
         double[] Q = {calculateQSCr(sex, age, 0),calculateQSCr(sex, age, hgt),calculateQCisC(age)};
         double BSA = calculateBSA(hgt, wgt);
 
-        result[0] =
-        result[1] = formulae.contains("FAS") ? calculateFAS(scr, age) : -1;
-        result[2] = formulae.contains("FASL") ? calculateFAS(scr, age) : -1;
-        result[3] = markers.contains("cisc") ? calculateFAS((var[2]/Q[2]),age) : -1;
-        result[4] = (age > 18) && formulae.contains("EPI") ? calculateCKDEPI(age, sex, scr) : -1;
-        result[5] = (age > 18) && formulae.contains("MDRD") ? calculateMDRD(age, sex, scr) : -1;
-        result[6] = (age > 70) && formulae.contains("BIS1") ? calculateBIS1(age, sex, scr) : -1;
-        result[7] = formulae.contains("LM") ? calculateLM(age, sex, scr) : -1;
-        result[8] = formulae.contains("CG") && wgt!=-1 ? calculateCG(wgt, age, sex, scr) : -1;
+        int FASTot = 0;
+        FASTot += formulae.contains("FAS") ? 1 : 0;
+        FASTot += formulae.contains("FASL") ? 1 : 0;
+        FASTot += formulae.contains("FASC") ? 1 : 0;
 
-        result = (BSA == 0) ? result : applyBSA(result, BSA);
+        result[0] = formulae.contains("FASCOM") && FASTot > 1 ? calculateFAS(calculateFASVar(var, Q), age) : -1;
+        result[1] = formulae.contains("FAS") ? calculateFAS(var[0]/Q[0], age) : -1;
+        result[2] = formulae.contains("FASL") ? calculateFAS(var[1]/Q[1], age) : -1;
+        result[3] = formulae.contains("FASC") ? calculateFAS((var[2]/Q[2]),age) : -1;
+        result[4] = (age > 18) && formulae.contains("CKDEPI") ? calculateCKDEPI(age, sex, scr) : -1;
+        result[5] = (age < 18) && formulae.contains("S") && hgt != -1 ? calculateSchwartz(age, sex, scr, hgt) : -1;
+        result[6] = (age > 18) && formulae.contains("MDRD") ? calculateMDRD(age, sex, scr) : -1;
+        result[7] = (age > 70) && formulae.contains("BIS1") ? calculateBIS1(age, sex, scr) : -1;
+        result[8] = formulae.contains("LM") ? calculateLM(age, sex, scr) : -1;
+        result[9] = formulae.contains("CG") && wgt!=-1 ? calculateCG(wgt, age, sex, scr) : -1;
+
+        //result = (BSA == 0) ? result : applyBSA(result, BSA);
         return true;
     }
     /*
@@ -265,7 +277,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public double calculateSchwartz(double age, boolean sex, double scr, double hgt){
-
+        return -1;
     }
 
     public double calculateCG(double wgt, double age, boolean sex, double scr) {

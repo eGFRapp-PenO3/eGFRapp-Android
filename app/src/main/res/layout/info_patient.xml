@@ -10,6 +10,18 @@
         android:textSize="12pt"
         android:textColor="@color/colorPrimary"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Patient ID: "
+        android:id="@+id/info_ID"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Patient name: "
+        android:id="@+id/info_name"
+        />
 
 
 </LinearLayout>

@@ -3,7 +3,7 @@
     <MultiSelectListPreference
         android:title="@string/settings_formulae_title"
         android:entries="@array/settings_formulae_entries"
-        android:entryValues="@array/settings_formulae_values"
+        android:entryValues="@array/result_key"
         android:key="formulae"
         />
     <SwitchPreference
