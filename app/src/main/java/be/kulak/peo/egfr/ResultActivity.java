@@ -25,7 +25,44 @@ public class ResultActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView patID = (TextView) findViewById(R.id.info_ID);
+        fillInfo(info);
+
+        ArrayList<Result> resultArray = new ArrayList<Result>();
+        ResultAdapter adapter = new ResultAdapter(this, resultArray);
+
+        ListView resultView = (ListView) findViewById(R.id.resultList);
+        resultView.setAdapter(adapter);
+        String[] keys = getResources().getStringArray(R.array.result_key);
+        fillResults(results, keys, adapter);
+    }
+
+    public void fillResults(double[] results, String[] keys, ResultAdapter adapter){
+        for (int i = 0; i < results.length; i++){
+            if(results[i] != -1){
+                Result Item = new Result(keys[i], results[i]);
+                adapter.add(Item);
+            }
+        }
+    }
+
+    public void fillInfo(String[] info){
+        TextView[] textViews = {
+                (TextView) findViewById(R.id.info_ID),
+                (TextView) findViewById(R.id.info_name),
+                (TextView) findViewById(R.id.info_age)
+        };
+        int[] resID = {
+                R.string.info_patient_id,
+                R.string.info_patient_name,
+                R.string.info_patient_age
+        };
+        for(int i=0; i<3; i++){
+            if(!info[i].matches("")){
+                textViews[i].setText(getResources().getString(resID[i]) + " " + info[i]);
+            }else{
+                textViews[i].setVisibility(View.GONE);
+            }
+        }
         if(!info[0].matches("")){
             patID.setText(getResources().getString(R.string.info_patient_id) + " " + info[0]);
         }
@@ -39,20 +76,26 @@ public class ResultActivity extends AppCompatActivity {
         else {
             patName.setVisibility(View.GONE);
         }
-
-        ArrayList<Result> resultArray = new ArrayList<Result>();
-        ResultAdapter adapter = new ResultAdapter(this, resultArray);
-
-        ListView resultView = (ListView) findViewById(R.id.resultList);
-        resultView.setAdapter(adapter);
-
-        String[] keys = getResources().getStringArray(R.array.result_key);
-        for (int i = 0; i < results.length; i++){
-            if(results[i] != -1){
-                Result Item = new Result(keys[i], results[i]);
-                adapter.add(Item);
-            }
-        }
+        TextView patAge = (TextView) findViewById(R.id.info_age);
+        patAge.setText(getResources().getString(R.string.info_patient_age) + " " + info[2]);
     }
 
+    /*
+    if(!info[0].matches("")){
+            patID.setText(getResources().getString(R.string.info_patient_id) + " " + info[0]);
+        }
+        else{
+            patID.setVisibility(View.GONE);
+        }
+        TextView patName = (TextView) findViewById(R.id.info_name);
+        if(!info[1].matches("")) {
+            patName.setText(getResources().getString(R.string.info_patient_name) + " " + info[1]);
+        }
+        else {
+            patName.setVisibility(View.GONE);
+        }
+        TextView patAge = (TextView) findViewById(R.id.info_age);
+        patAge.setText(getResources().getString(R.string.info_patient_age) + " " + info[2]);
+
+     */
 }

@@ -25,8 +25,10 @@ import java.util.Set;
 
 import static android.R.color.tertiary_text_light;
 import static java.lang.Math.exp;
+import static java.lang.Math.floor;
 import static java.lang.Math.log;
 import static java.lang.Math.pow;
+import static java.lang.Math.round;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
     double wgt;
     public static double age;
     double[] result;
-    String[] info = new String[2];
+    String[] info = new String[3];
     boolean si;
 
     EditText mPatID;
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity{
                     String FN = mFN.getText().toString().trim();
                     String LN = mLN.getText().toString().trim();
                     info[1] = FN.matches("") && LN.matches("") ? "" : (FN + " " + LN);
+                    info[2] = String.format("%.0f", floor(age));
                     Intent resultIntent = new Intent(getBaseContext(), ResultActivity.class);
                     resultIntent.putExtra(extra_result, result);
                     resultIntent.putExtra(extra_info, info);
@@ -102,14 +105,6 @@ public class MainActivity extends AppCompatActivity{
         fillResultMap();
 
         result = new double[getResources().getStringArray(R.array.result_key).length];
-
-        Button btnPatID = (Button) findViewById(R.id.btn_patID);
-        btnPatID.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Database not yet supported.", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.array_sex, android.R.layout.simple_spinner_item);
@@ -144,6 +139,8 @@ public class MainActivity extends AppCompatActivity{
             mPatID.setText("");
             mAgeBtn.setText(getResources().getString(R.string.hint_age_init));
             mAgeBtn.setTextColor(getResources().getColor(tertiary_text_light));
+            mFN.setText("");
+            mLN.setText("");
             age = 0;
             mScr.setText("");
             mCisC.setText("");
@@ -169,13 +166,13 @@ public class MainActivity extends AppCompatActivity{
         }
         double[] var = {scr, scr, cisc};
         double[] Q = {calculateQSCr(sex, age, 0),calculateQSCr(sex, age, hgt),calculateQCisC(age)};
-        double BSA = calculateBSA(hgt, wgt);
+        //double BSA = calculateBSA(hgt, wgt);
 
         result[1] = formulae.contains("FAS") ? calculateFAS(scr, age, Q[0]) : -1;
         result[2] = formulae.contains("FASL") ? calculateFAS(scr, age, Q[1]) : -1;
         result[3] = formulae.contains("FASC") ? calculateFAS(cisc,age, Q[2]) : -1;
         result[4] = (age > 18) && formulae.contains("CKDEPI") ? calculateCKDEPI(age, sex, scr) : -1;
-        result[5] = (age < 18) && formulae.contains("S") && hgt != -1 ? calculateSchwartz(age, sex, scr, hgt) : -1;
+        result[5] = (age < 18) && formulae.contains("S") && hgt != -1 ? calculateSchwartz(scr, hgt) : -1;
         result[6] = (age > 18) && formulae.contains("MDRD") ? calculateMDRD(age, sex, scr) : -1;
         result[7] = (age > 70) && formulae.contains("BIS1") ? calculateBIS1(age, sex, scr) : -1;
         result[8] = formulae.contains("LM") ? calculateLM(age, sex, scr) : -1;
@@ -277,8 +274,8 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double calculateSchwartz(double age, boolean sex, double scr, double hgt){
-        return -1;
+    public double calculateSchwartz(double scr, double hgt){
+        return 0.413 * hgt * 100 / scr;
     }
 
     public double calculateCG(double wgt, double age, boolean sex, double scr) {

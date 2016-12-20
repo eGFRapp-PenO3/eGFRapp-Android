@@ -15,7 +15,7 @@
     <string name="hint_age_init">Tap to set birth date</string>
     <string name="hint_age">"Birthdate: "</string>
     <string name="hint_scr" translatable="false">Serum Creatinine</string>
-    <string name="hint_cisc">Cystatine-C (mg/L)</string>
+    <string name="hint_cisc">Cystatin-C (mg/L)</string>
     <string name="hint_hgt">Height (cm)</string>
     <string name="hint_wgt">Weight (kg)</string>
 
@@ -25,6 +25,7 @@
     <string name="info_patient_title">Patient Information</string>
     <string name="info_patient_id">Patient ID: </string>
     <string name="info_patient_name">Patient name: </string>
+    <string name="info_patient_age">Patient age: </string>
 
     <string-array name="array_sex">
         <item>Male</item>
@@ -60,7 +61,7 @@
         <item>FAS Combi:Full Age Spectrum</item>
         <item>FAS:Full Age Spectrum</item>
         <item>FAS Height:Full Age Spectrum calculated with height</item>
-        <item>FAS Cis-C:Full Age Spectrum calculated with Cistatine-C</item>
+        <item>FAS Cys-C:Full Age Spectrum calculated with Cystatin-C</item>
         <item>CKD-EPI</item>
         <item>Schwartz</item>
         <item>MDRD</item>
@@ -72,7 +73,7 @@
     <string-array name="settings_formulae_entries">
         <item>FAS SCr</item>
         <item>FAS SCr Height</item>
-        <item>FAS Cis-C</item>
+        <item>FAS Cys-C</item>
         <item>FAS Combi</item>
         <item>CKD-EPI</item>
         <item>Schwartz</item>
@@ -84,7 +85,7 @@
 
     <string-array name="settings_markers_entries">
         <item>Serum Creatinine</item>
-        <item>Cistatine-C</item>
+        <item>Cystatin-C</item>
     </string-array>
 
     <string-array name="settings_markers_values">
