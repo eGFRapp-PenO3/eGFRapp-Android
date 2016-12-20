@@ -71,6 +71,10 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if (calculateGFR()) {
+                    info[0] = mPatID.getText().toString().trim();
+                    String FN = mFN.getText().toString().trim();
+                    String LN = mLN.getText().toString().trim();
+                    info[1] = FN.matches("") && LN.matches("") ? "" : (FN + " " + LN);
                     Intent resultIntent = new Intent(getBaseContext(), ResultActivity.class);
                     resultIntent.putExtra(extra_result, result);
                     resultIntent.putExtra(extra_info, info);
@@ -96,9 +100,6 @@ public class MainActivity extends AppCompatActivity{
         mScr.setHint(getResources().getString(R.string.hint_scr) + (si ? " (μmol/L)" : " (mg/dL)"));
         //create hashmap with result data
         fillResultMap();
-
-        info[0] = mPatID.getText().toString();
-        info[1] = mFN.getText() + " " + mLN.getText();
 
         result = new double[getResources().getStringArray(R.array.result_key).length];
 
@@ -170,15 +171,9 @@ public class MainActivity extends AppCompatActivity{
         double[] Q = {calculateQSCr(sex, age, 0),calculateQSCr(sex, age, hgt),calculateQCisC(age)};
         double BSA = calculateBSA(hgt, wgt);
 
-        int FASTot = 0;
-        FASTot += formulae.contains("FAS") ? 1 : 0;
-        FASTot += formulae.contains("FASL") ? 1 : 0;
-        FASTot += formulae.contains("FASC") ? 1 : 0;
-
-        result[0] = formulae.contains("FASCOM") && FASTot > 1 ? calculateFAS(calculateFASVar(var, Q), age) : -1;
-        result[1] = formulae.contains("FAS") ? calculateFAS(var[0]/Q[0], age) : -1;
-        result[2] = formulae.contains("FASL") ? calculateFAS(var[1]/Q[1], age) : -1;
-        result[3] = formulae.contains("FASC") ? calculateFAS((var[2]/Q[2]),age) : -1;
+        result[1] = formulae.contains("FAS") ? calculateFAS(scr, age, Q[0]) : -1;
+        result[2] = formulae.contains("FASL") ? calculateFAS(scr, age, Q[1]) : -1;
+        result[3] = formulae.contains("FASC") ? calculateFAS(cisc,age, Q[2]) : -1;
         result[4] = (age > 18) && formulae.contains("CKDEPI") ? calculateCKDEPI(age, sex, scr) : -1;
         result[5] = (age < 18) && formulae.contains("S") && hgt != -1 ? calculateSchwartz(age, sex, scr, hgt) : -1;
         result[6] = (age > 18) && formulae.contains("MDRD") ? calculateMDRD(age, sex, scr) : -1;
@@ -186,10 +181,16 @@ public class MainActivity extends AppCompatActivity{
         result[8] = formulae.contains("LM") ? calculateLM(age, sex, scr) : -1;
         result[9] = formulae.contains("CG") && wgt!=-1 ? calculateCG(wgt, age, sex, scr) : -1;
 
+        int FASTot = 0;
+        for (int i=1; i<4; i++){
+            FASTot += result[i]==-1 ? 0 : 1;
+        }
+        result[0] = formulae.contains("FASCOM") && FASTot > 1 ? calculateFASCOM(calculateFASVar(var, Q), age) : -1;
+
         //result = (BSA == 0) ? result : applyBSA(result, BSA);
         return true;
     }
-    /*
+
     public double calculateFAS(double scr, double age, double Q) {
         if (Q == -1) {
             return -1;
@@ -203,8 +204,8 @@ public class MainActivity extends AppCompatActivity{
             return -1;
         }
     }
-    */
-    public double calculateFAS(double var, double age) {
+
+    public double calculateFASCOM(double var, double age) {
         if (var > .5) {
             if (age < 40) {
                 return 107.3 / var * (1 - exp(-age / 0.5));

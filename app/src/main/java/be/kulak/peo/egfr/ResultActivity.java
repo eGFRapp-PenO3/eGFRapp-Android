@@ -21,16 +21,24 @@ public class ResultActivity extends AppCompatActivity {
         double[] results = resultIntent.getDoubleArrayExtra(MainActivity.extra_result);
         String[] info = resultIntent.getStringArrayExtra(MainActivity.extra_info);
 
-        TextView patID = (TextView) findViewById(R.id.info_ID);
-        if(info[0] != "") patID.setText(getResources().getString(R.string.info_patient_id) + info[0]);
-        else patID.setVisibility(View.GONE);
-        TextView patName = (TextView) findViewById(R.id.info_name);
-        if(info[1] != " ") patName.setText(getResources().getString(R.string.info_patient_name) + info[1]);
-        else patName.setVisibility(View.GONE);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextView patID = (TextView) findViewById(R.id.info_ID);
+        if(!info[0].matches("")){
+            patID.setText(getResources().getString(R.string.info_patient_id) + " " + info[0]);
+        }
+        else{
+            patID.setVisibility(View.GONE);
+        }
+        TextView patName = (TextView) findViewById(R.id.info_name);
+        if(!info[1].matches("")) {
+            patName.setText(getResources().getString(R.string.info_patient_name) + " " + info[1]);
+        }
+        else {
+            patName.setVisibility(View.GONE);
+        }
 
         ArrayList<Result> resultArray = new ArrayList<Result>();
         ResultAdapter adapter = new ResultAdapter(this, resultArray);

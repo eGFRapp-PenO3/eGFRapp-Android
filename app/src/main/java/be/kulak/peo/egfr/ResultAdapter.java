@@ -35,7 +35,7 @@ public class ResultAdapter extends ArrayAdapter<Result> {
         resultName.setText(result.formula);
         resultValue.setText(result.value);
         resultHint.setText(result.hint);
-        resultUnit.setText(result.formula == "Cockcroft-Gault" ? "mL/min" : "mL/min/1.73 m²");
+        resultUnit.setText(result.unit);
         // Return the completed view to render on screen
         return convertView;
     }
