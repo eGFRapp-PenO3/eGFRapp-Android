@@ -4,6 +4,7 @@
         android:title="@string/settings_formulae_title"
         android:entries="@array/settings_formulae_entries"
         android:entryValues="@array/result_key"
+        android:defaultValue="@array/result_key"
         android:key="formulae"
         />
     <SwitchPreference

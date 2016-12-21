@@ -17,13 +17,13 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        Intent resultIntent = getIntent();
-        double[] results = resultIntent.getDoubleArrayExtra(MainActivity.extra_result);
-        String[] info = resultIntent.getStringArrayExtra(MainActivity.extra_info);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent resultIntent = getIntent();
+        double[] results = resultIntent.getDoubleArrayExtra(MainActivity.extra_result);
+        String[] info = resultIntent.getStringArrayExtra(MainActivity.extra_info);
 
         fillInfo(info);
 
@@ -49,35 +49,22 @@ public class ResultActivity extends AppCompatActivity {
         TextView[] textViews = {
                 (TextView) findViewById(R.id.info_ID),
                 (TextView) findViewById(R.id.info_name),
-                (TextView) findViewById(R.id.info_age)
+                (TextView) findViewById(R.id.info_age),
+                (TextView) findViewById(R.id.info_date)
         };
         int[] resID = {
                 R.string.info_patient_id,
                 R.string.info_patient_name,
-                R.string.info_patient_age
+                R.string.info_patient_age,
+                R.string.info_date
         };
-        for(int i=0; i<3; i++){
+        for(int i=0; i<info.length; i++){
             if(!info[i].matches("")){
                 textViews[i].setText(getResources().getString(resID[i]) + " " + info[i]);
             }else{
                 textViews[i].setVisibility(View.GONE);
             }
         }
-        if(!info[0].matches("")){
-            patID.setText(getResources().getString(R.string.info_patient_id) + " " + info[0]);
-        }
-        else{
-            patID.setVisibility(View.GONE);
-        }
-        TextView patName = (TextView) findViewById(R.id.info_name);
-        if(!info[1].matches("")) {
-            patName.setText(getResources().getString(R.string.info_patient_name) + " " + info[1]);
-        }
-        else {
-            patName.setVisibility(View.GONE);
-        }
-        TextView patAge = (TextView) findViewById(R.id.info_age);
-        patAge.setText(getResources().getString(R.string.info_patient_age) + " " + info[2]);
     }
 
     /*

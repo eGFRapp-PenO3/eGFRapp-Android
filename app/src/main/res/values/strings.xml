@@ -26,6 +26,7 @@
     <string name="info_patient_id">Patient ID: </string>
     <string name="info_patient_name">Patient name: </string>
     <string name="info_patient_age">Patient age: </string>
+    <string name="info_date">Measurement date: </string>
 
     <string-array name="array_sex">
         <item>Male</item>

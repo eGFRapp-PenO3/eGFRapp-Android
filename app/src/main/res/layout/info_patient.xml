@@ -13,6 +13,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/info_date"
+        android:id="@+id/info_date"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Patient ID: "
         android:id="@+id/info_ID"
         />

@@ -33,9 +33,9 @@ public class AgePickerFragment extends DialogFragment implements DatePickerDialo
         DateTime birthdate = new DateTime(year,monthOfYear,dayOfMonth,0,0);
         age = calculateAge(birthdate);
         MainActivity.age = age;
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEE d MMM yyyy");
         String hint = getResources().getString(hint_age);
-        MainActivity.mAgeBtn.setText(hint + fmt.print(birthdate));
+        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("EEE d MMM yyyy");
+        MainActivity.mAgeBtn.setText(hint + dateFormat.print(birthdate));
         MainActivity.mAgeBtn.setTextColor(getResources().getColor(primary_text_light));
     }
 

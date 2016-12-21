@@ -16,6 +16,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity{
     double wgt;
     public static double age;
     double[] result;
-    String[] info = new String[3];
+    String[] info = new String[4];
     boolean si;
 
     EditText mPatID;
@@ -78,6 +82,9 @@ public class MainActivity extends AppCompatActivity{
                     String LN = mLN.getText().toString().trim();
                     info[1] = FN.matches("") && LN.matches("") ? "" : (FN + " " + LN);
                     info[2] = String.format("%.0f", floor(age));
+                    DateTime today = new DateTime();
+                    DateTimeFormatter dateFormat = DateTimeFormat.forPattern("EEE d MMM yyyy");
+                    info[3] = dateFormat.print(today) + " (today)";
                     Intent resultIntent = new Intent(getBaseContext(), ResultActivity.class);
                     resultIntent.putExtra(extra_result, result);
                     resultIntent.putExtra(extra_info, info);
@@ -188,7 +195,7 @@ public class MainActivity extends AppCompatActivity{
         return true;
     }
 
-    public double calculateFAS(double scr, double age, double Q) {
+    private double calculateFAS(double scr, double age, double Q) {
         if (Q == -1) {
             return -1;
         } else if ((scr / Q) > .5) {
@@ -202,7 +209,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double calculateFASCOM(double var, double age) {
+    private double calculateFASCOM(double var, double age) {
         if (var > .5) {
             if (age < 40) {
                 return 107.3 / var * (1 - exp(-age / 0.5));
@@ -214,7 +221,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double calculateFASVar(double[] mark, double[] Q){
+    private double calculateFASVar(double[] mark, double[] Q){
         List<Double> marQ = new ArrayList<>();
         for(int i=0; i<mark.length; i++){
             if (mark[i] != -1){
@@ -226,7 +233,7 @@ public class MainActivity extends AppCompatActivity{
         return totvar/marQ.size();
     }
 
-    public double calculateCKDEPI(double age, boolean sex, double scr) {
+    private double calculateCKDEPI(double age, boolean sex, double scr) {
         if (sex) {
             if (scr < .7) {
                 return 141 * pow(scr / .9, -.411) * pow(0.993, age);
@@ -242,7 +249,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double calculateMDRD(double age, boolean sex, double scr) {
+    private double calculateMDRD(double age, boolean sex, double scr) {
         if (sex) {
             return 175 * pow(scr, -1.154) * pow(age, -0.203) * 0.742;
         } else {
@@ -250,7 +257,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double calculateBIS1(double age, boolean sex, double scr) {
+    private double calculateBIS1(double age, boolean sex, double scr) {
         if (sex) {
             return 3736 * pow(scr, -.87) * pow(age, -.95) * .82;
         } else {
@@ -258,7 +265,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double calculateLM(double age, boolean sex, double scr) {
+    private double calculateLM(double age, boolean sex, double scr) {
         if (scr * 88.4 < 150) {
             if (sex) {
                 return exp(4.62 - 0.0112 * scr * 88.4 - 0.0124 * age + 0.339 * log(age) - 0.226);
@@ -274,11 +281,11 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double calculateSchwartz(double scr, double hgt){
+    private double calculateSchwartz(double scr, double hgt){
         return 0.413 * hgt * 100 / scr;
     }
 
-    public double calculateCG(double wgt, double age, boolean sex, double scr) {
+    private double calculateCG(double wgt, double age, boolean sex, double scr) {
         if (sex)
         {
             return (140 - age) * wgt / (72 * scr) * 0.85;
@@ -289,6 +296,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    /*
     public double calculateBSA(double hgt, double wgt) {
         if (hgt == -1 | wgt == -1) {
             return 0;
@@ -296,6 +304,7 @@ public class MainActivity extends AppCompatActivity{
             return 0.007184 * pow((hgt*100), 0.725) * pow(wgt, 0.425);
         }
     }
+    */
 
     /*
     multiplies all elements of array with double BSA,
@@ -361,8 +370,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double calculateQCisC(double age)
-    {
+    public double calculateQCisC(double age) {
         if (age < 70)
         {
             return 0.82;
