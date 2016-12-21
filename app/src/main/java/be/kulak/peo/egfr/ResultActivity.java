@@ -50,13 +50,15 @@ public class ResultActivity extends AppCompatActivity {
                 (TextView) findViewById(R.id.info_ID),
                 (TextView) findViewById(R.id.info_name),
                 (TextView) findViewById(R.id.info_age),
-                (TextView) findViewById(R.id.info_date)
+                (TextView) findViewById(R.id.info_date),
+                (TextView) findViewById(R.id.info_FAS)
         };
         int[] resID = {
                 R.string.info_patient_id,
                 R.string.info_patient_name,
                 R.string.info_patient_age,
-                R.string.info_date
+                R.string.info_date,
+                R.string.info_FAS
         };
         for(int i=0; i<info.length; i++){
             if(!info[i].matches("")){

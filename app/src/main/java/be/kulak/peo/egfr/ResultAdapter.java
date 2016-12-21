@@ -34,6 +34,7 @@ public class ResultAdapter extends ArrayAdapter<Result> {
         // Populate the data into the template view using the data object
         resultName.setText(result.formula);
         resultValue.setText(result.value);
+        if(result.textcolor) resultValue.setTextColor(getContext().getResources().getColor(R.color.colorAccent));
         resultHint.setText(result.hint);
         resultUnit.setText(result.unit);
         // Return the completed view to render on screen

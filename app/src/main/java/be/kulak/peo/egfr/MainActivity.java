@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.joda.time.DateTime;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity{
     public final static String extra_result = "be.kulak.peo.egfr.result";
     public final static String extra_info = "be.kulak.peo.egfr.info";
 
+    //0: FASNorm; 1: FASLow; 2: FASHigh
+    public static double[] FASnormal = new double[3];
+
     public final static Map<String,String> ResultStrings = new HashMap<>();
 
     double scr;
@@ -46,10 +50,11 @@ public class MainActivity extends AppCompatActivity{
     boolean sex;
     double hgt;
     double wgt;
-    public static double age;
+    public static double age = -1;
     double[] result;
-    String[] info = new String[4];
+    String[] info = new String[5];
     boolean si;
+    boolean FASInUse;
 
     EditText mPatID;
     EditText mFN;
@@ -77,17 +82,18 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if (calculateGFR()) {
-                    info[0] = mPatID.getText().toString().trim();
-                    String FN = mFN.getText().toString().trim();
-                    String LN = mLN.getText().toString().trim();
-                    info[1] = FN.matches("") && LN.matches("") ? "" : (FN + " " + LN);
-                    info[2] = String.format("%.0f", floor(age));
-                    DateTime today = new DateTime();
-                    DateTimeFormatter dateFormat = DateTimeFormat.forPattern("EEE d MMM yyyy");
-                    info[3] = dateFormat.print(today) + " (today)";
                     Intent resultIntent = new Intent(getBaseContext(), ResultActivity.class);
+                    //pass results to resultactivity
                     resultIntent.putExtra(extra_result, result);
-                    resultIntent.putExtra(extra_info, info);
+                    //pass info to resultactivity
+                    resultIntent.putExtra(extra_info, generateInfo(
+                            mPatID.getText().toString(),
+                            mFN.getText().toString(),
+                            mLN.getText().toString(),
+                            age,
+                            new DateTime(),
+                            FASnormal
+                    ));
                     startActivity(resultIntent);
                 }
             }
@@ -163,17 +169,29 @@ public class MainActivity extends AppCompatActivity{
     public boolean calculateGFR() {
         // true = female
         sex = mSex.getSelectedItemPosition() == 1;
-        scr = parseDouble(mScr, true);
+        scr = parseDouble(mScr);
         scr = si ? scr/88.4 : scr;
-        cisc = parseDouble(mCisC, true);
-        hgt = parseDouble(mHgt, false) / 100;
-        wgt = parseDouble(mWgt, false);
+        cisc = parseDouble(mCisC);
+        if(scr==-1 && cisc==-1){
+            mCisC.setError("Enter valid Cystatine-C!");
+            mScr.setError("Enter valid Serum Creatinine!");
+            return false;
+        }
+        hgt = parseDouble(mHgt) / 100;
+        wgt = parseDouble(mWgt);
+        if (age==-1){
+            mAgeBtn.setError("Enter age!");
+            return false;
+        }
         if (scr == -1 | age < .1) {
+            mAgeBtn.setError("Patient age must be above 1 month!");
             return false;
         }
         double[] var = {scr, scr, cisc};
         double[] Q = {calculateQSCr(sex, age, 0),calculateQSCr(sex, age, hgt),calculateQCisC(age)};
         //double BSA = calculateBSA(hgt, wgt);
+
+        FASInUse = formulae.contains("FAS") | formulae.contains("FASL") | formulae.contains("FASC");
 
         result[1] = formulae.contains("FAS") ? calculateFAS(scr, age, Q[0]) : -1;
         result[2] = formulae.contains("FASL") ? calculateFAS(scr, age, Q[1]) : -1;
@@ -185,6 +203,8 @@ public class MainActivity extends AppCompatActivity{
         result[8] = formulae.contains("LM") ? calculateLM(age, sex, scr) : -1;
         result[9] = formulae.contains("CG") && wgt!=-1 ? calculateCG(wgt, age, sex, scr) : -1;
 
+        if(FASInUse) FASnormal = calculateFASNorm(age);
+
         int FASTot = 0;
         for (int i=1; i<4; i++){
             FASTot += result[i]==-1 ? 0 : 1;
@@ -193,6 +213,20 @@ public class MainActivity extends AppCompatActivity{
 
         //result = (BSA == 0) ? result : applyBSA(result, BSA);
         return true;
+    }
+
+    private double[] calculateFASNorm(double age){
+        double[] FASNorm = new double[3];
+        if(age<40){
+            FASNorm[0] = 107.3;
+            FASNorm[1] = 107.3 / 1.33;
+            FASNorm[2] = 107.3 / 0.67;
+        }else{
+            FASNorm[0] = 107.3 * pow(0.988, age - 40);
+            FASNorm[1] = 107.3 / 1.33 * pow(0.988, age - 40);
+            FASNorm[2] = 107.3 / 0.67 * pow(0.988, age - 40);
+        }
+        return FASNorm;
     }
 
     private double calculateFAS(double scr, double age, double Q) {
@@ -381,15 +415,12 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public double parseDouble(EditText text, boolean required) {
+    public double parseDouble(EditText text) {
         String stringVal = text.getText().toString();
         double value;
         try {
             value = Double.parseDouble(stringVal);
         } catch (NumberFormatException e) {
-            if (required) {
-                text.setError("Enter valid " + text.getHint());
-            }
             return -1;
         }
         return value;
@@ -402,5 +433,26 @@ public class MainActivity extends AppCompatActivity{
         for(int i = 0; i < keys.length; i++){
             ResultStrings.put(keys[i],values[i]);
         }
+    }
+
+    public String[] generateInfo(String patID, String FN, String LN, double age, DateTime date, double[] FASnormal){
+        String[] info = new String[5];
+        //fill patient id
+        info[0] = patID.trim();
+        //fill name
+        FN.trim();
+        LN.trim();
+        info[1] = FN.matches("") && LN.matches("") ? "" : (FN + " " + LN);
+        //fill age
+        info[2] = String.format("%.0f", floor(age));
+        //fill date
+        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("EEE d MMM yyyy");
+        info[3] = dateFormat.print(date);
+        //fill FAS range
+        double deltaFAS = FASnormal[0] - FASnormal[1];
+        if(FASInUse) info[4] = String.format("[%.1f - %.1f/%.1f]", FASnormal[1], FASnormal[0]+deltaFAS,FASnormal[2]);
+        else info[4] = "";
+        //return full array
+        return info;
     }
 }
