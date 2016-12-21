@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">eGFR</string>
     <string name="action_settings">Instellingen</string>
-    <string name="hint_age">Leeftijd</string>
+    <string name="hint_age">"Geboortedatum: "</string>
     <string name="hint_bsa">Lichaamsoppervlakte (BSA)</string>
     <string name="hint_hgt">Lengte (cm)</string>
     <string name="hint_patID">ID Patiënt</string>

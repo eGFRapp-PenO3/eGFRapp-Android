@@ -12,8 +12,10 @@
     <string name="hint_patFN">First Name</string>
     <string name="hint_patLN">Last Name</string>
 
-    <string name="hint_age">Age</string>
+    <string name="hint_age_init">Tap to set birth date</string>
+    <string name="hint_age">"Birthdate: "</string>
     <string name="hint_scr" translatable="false">Serum Creatinine</string>
+    <string name="hint_cisc">Cystatin-C (mg/L)</string>
     <string name="hint_hgt">Height (cm)</string>
     <string name="hint_wgt">Weight (kg)</string>
 
@@ -21,10 +23,14 @@
     <string name="extra_FAS">Full Age Spectrum calculated by age</string>
 
     <string name="info_patient_title">Patient Information</string>
+    <string name="info_patient_id">Patient ID: </string>
+    <string name="info_patient_name">Patient name: </string>
+    <string name="info_patient_age">Patient age: </string>
+    <string name="info_date">Measurement date: </string>
 
     <string-array name="array_sex">
-        <item>M</item>
-        <item>F</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 
     <string name="title_activity_result">Results</string>
@@ -40,9 +46,12 @@
     <string name="settings_si_hint">Use SI units as input</string>
 
     <string-array name="result_key">
+        <item>FASCOM</item>
         <item>FAS</item>
         <item>FASL</item>
+        <item>FASC</item>
         <item>CKDEPI</item>
+        <item>S</item>
         <item>MDRD</item>
         <item>BIS1</item>
         <item>LM</item>
@@ -50,9 +59,12 @@
     </string-array>
 
     <string-array name="result_value">
-        <item>FAS By Age:Full Age Spectrum calculated by age</item>
-        <item>FAS By Height:Full Age Spectrum calculated by height</item>
+        <item>FAS Combi:Full Age Spectrum</item>
+        <item>FAS:Full Age Spectrum</item>
+        <item>FAS Height:Full Age Spectrum calculated with height</item>
+        <item>FAS Cys-C:Full Age Spectrum calculated with Cystatin-C</item>
         <item>CKD-EPI</item>
+        <item>Schwartz</item>
         <item>MDRD</item>
         <item>BIS1</item>
         <item>Lund-Malmö</item>
@@ -60,33 +72,26 @@
     </string-array>
 
     <string-array name="settings_formulae_entries">
-        <item>FAS By Age</item>
-        <item>FAS By Height</item>
+        <item>FAS SCr</item>
+        <item>FAS SCr Height</item>
+        <item>FAS Cys-C</item>
+        <item>FAS Combi</item>
         <item>CKD-EPI</item>
+        <item>Schwartz</item>
         <item>MDRD</item>
         <item>BIS1</item>
         <item>Lund-Malmö</item>
         <item>Cockcroft-Gault</item>
     </string-array>
 
-    <string-array name="settings_formulae_values">
-        <item>FAS</item>
-        <item>FASL</item>
-        <item>EPI</item>
-        <item>MDRD</item>
-        <item>BIS1</item>
-        <item>LM</item>
-        <item>CG</item>
-    </string-array>
-
     <string-array name="settings_markers_entries">
         <item>Serum Creatinine</item>
-        <item>Cistatine-C</item>
+        <item>Cystatin-C</item>
     </string-array>
 
     <string-array name="settings_markers_values">
-        <item>SC</item>
-        <item>CC</item>
+        <item>scr</item>
+        <item>cisc</item>
     </string-array>
 
 </resources>
