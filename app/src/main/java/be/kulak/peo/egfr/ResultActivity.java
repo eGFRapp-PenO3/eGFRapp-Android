@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,6 +68,19 @@ public class ResultActivity extends AppCompatActivity {
             }else{
                 textViews[i].setVisibility(View.GONE);
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.result, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == R.id.action_save){
+
         }
     }
 
