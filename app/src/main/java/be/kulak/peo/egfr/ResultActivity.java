@@ -77,13 +77,6 @@ public class ResultActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-        if (id == R.id.action_save){
-
-        }
-    }
-
     /*
     if(!info[0].matches("")){
             patID.setText(getResources().getString(R.string.info_patient_id) + " " + info[0]);
