@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity{
     //0: FASNorm; 1: FASLow; 2: FASHigh
     public static double[] FASnormal = new double[3];
 
-    public final static Map<String,String> ResultStrings = new HashMap<>();
+    //public final static Map<String,String> ResultStrings = new HashMap<>();
+    public static Map<String,String[]> ResultStrings = new HashMap<>();
 
     double scr;
     double cisc;
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity{
         si = settings.getBoolean("si", si);
         mScr.setHint(getResources().getString(R.string.hint_scr) + (si ? " (μmol/L)" : " (mg/dL)"));
         //create hashmap with result data
-        fillResultMap();
+        ResultStrings = makeResultMap();
 
         result = new double[getResources().getStringArray(R.array.result_key).length];
 
@@ -426,12 +427,22 @@ public class MainActivity extends AppCompatActivity{
         return value;
 
     }
-
+    /*
     public void fillResultMap(){
         String[] keys = getResources().getStringArray(R.array.result_key);
         String[] values = getResources().getStringArray(R.array.result_value);
         for(int i = 0; i < keys.length; i++){
             ResultStrings.put(keys[i],values[i]);
+        }
+    }
+    */
+    public HashMap<String,String[]> makeResultMap(){
+        String[] keys = getResources().getStringArray(R.array.result_key);
+        String[] values = getResources().getStringArray(R.array.result_value);
+        HashMap<String,String[]> resultMap = new HashMap<>();
+        for(int i = 0; i<keys.length; i++){
+            String[] keyValues = values[i].split(":");
+            resultMap.put(keys[i], keyValues);
         }
     }
 
