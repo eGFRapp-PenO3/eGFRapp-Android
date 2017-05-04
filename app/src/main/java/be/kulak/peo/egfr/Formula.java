@@ -1,15 +1,19 @@
 package be.kulak.peo.egfr;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by elias on 03/05/17.
  */
 
-enum Formula {
-    FAS("fas"), FASL("fasl"), FASC("fasc"),
-    CKDEPI("ckdepi"), S("s"), MDRD("mdrd"),
-    BIS1("bis1"), LM("lm"), CG("cg");
+class Formula {
+
+    List<String> validKeys
+            = Arrays.asList("fas","fasl","fasc","ckdepi","s","mdrd","bis1","lm","cg");
 
     private Formula(String formulaKey, double value){
+        assert isValidKey(formulaKey);
         setKey(formulaKey);
         setHint(formulaKey);
         setDescription(formulaKey);
@@ -27,7 +31,7 @@ enum Formula {
     }
 
     public boolean isValidKey(String formulaKey){
-        return formulaKey != null && formulaKey.matches("[a-z]");
+        return formulaKey != null && validKeys.contains(formulaKey);
     }
 
     private static String hint;
