@@ -1,10 +1,17 @@
 package be.kulak.peo.egfr;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * Created by elias on 02/12/16.
  */
 
-public class Result {
+public class Result{
+
+    public HashMap<String, Formula> formulaMap = new HashMap<>();
+
     public String formula;
     public String hint;
     public String value;
@@ -22,5 +29,9 @@ public class Result {
             textcolor = result < FASNormal - deltaFAS | result > FASNormal + deltaFAS;
         }
         this.unit = (key.contains("CG") ? "mL/min" : "mL/min/1.73 m²");
+    }
+
+    public Formula getElementWithKey(String key){
+        return formulaMap.get(key);
     }
 }

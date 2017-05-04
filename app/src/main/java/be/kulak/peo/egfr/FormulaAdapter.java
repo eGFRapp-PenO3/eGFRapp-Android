@@ -13,8 +13,8 @@ import java.util.ArrayList;
  * Created by elias on 02/12/16.
  */
 
-public class ResultAdapter extends ArrayAdapter<Result> {
-    public ResultAdapter(Context context, ArrayList<Result> users) {
+public class FormulaAdapter extends ArrayAdapter<Result> {
+    public FormulaAdapter(Context context, ArrayList<Result> users) {
         super(context, 0, users);
     }
 

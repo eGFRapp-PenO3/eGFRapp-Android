@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,7 +29,7 @@ public class ResultActivity extends AppCompatActivity {
         fillInfo(info);
 
         ArrayList<Result> resultArray = new ArrayList<Result>();
-        ResultAdapter adapter = new ResultAdapter(this, resultArray);
+        FormulaAdapter adapter = new FormulaAdapter(this, resultArray);
 
         ListView resultView = (ListView) findViewById(R.id.resultList);
         resultView.setAdapter(adapter);
@@ -38,7 +37,7 @@ public class ResultActivity extends AppCompatActivity {
         fillResults(results, keys, adapter);
     }
 
-    public void fillResults(double[] results, String[] keys, ResultAdapter adapter){
+    public void fillResults(double[] results, String[] keys, FormulaAdapter adapter){
         for (int i = 0; i < results.length; i++){
             if(results[i] != -1){
                 Result Item = new Result(keys[i], results[i]);
